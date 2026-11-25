@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Texto del pedido de ejemplo (español). Restaurantes y repartidores inventados. -->
+<resources>
+    <string name="sample_preparing">Preparando tu pedido</string>
+    <string name="sample_picking_up">%s está recogiendo tu pedido</string>
+    <string name="sample_arriving_at">Llega a las %s</string>
+    <string name="sample_on_the_way">%s va en camino</string>
+    <string name="sample_almost_there">Ya casi llega</string>
+    <string name="sample_nearby">%s está cerca</string>
+    <string-array name="sample_restaurants">
+        <item>Tacos El Güero</item>
+        <item>La Pizzería de Nico</item>
+        <item>Tortas Doña Mary</item>
+        <item>Sushi Hana</item>
+        <item>Pozolería La Abuela</item>
+        <item>Burger Lab</item>
+        <item>Café de la Esquina</item>
+        <item>Mariscos El Puerto</item>
+    </string-array>
+    <string-array name="sample_couriers">
+        <item>Luis</item>
+        <item>Ana</item>
+        <item>Carlos</item>
+        <item>Sofía</item>
+        <item>Diego</item>
+        <item>María</item>
+        <item>Jorge</item>
+        <item>Valeria</item>
+    </string-array>
+</resources>

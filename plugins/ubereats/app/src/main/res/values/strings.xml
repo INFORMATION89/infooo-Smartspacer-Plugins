@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Uber Eats for Smartspacer</string>
+    <string name="target_label">Uber Eats</string>
+    <string name="target_description">Shows your Uber Eats order on its way</string>
+
+    <!-- Settings -->
+    <string name="section_card">Card</string>
+    <string name="section_lock_screen">Lock screen</string>
+    <string name="section_permissions">Permissions</string>
+    <string name="setting_courier_title">Show courier photo</string>
+    <string name="setting_courier_summary">Once a courier is on your order, shows their photo on the card instead of the app\'s icon.</string>
+    <string name="setting_extra_title">Show after details</string>
+    <string name="setting_extra_summary">Adds the time left (· 12 min) or how far along your order is (· 60%)</string>
+    <string name="setting_extra_time_left">Time left</string>
+    <string name="setting_extra_progress">Progress</string>
+    <string name="setting_extra_none">Off</string>
+    <string name="setting_hide_title">Hide notification on lock screen</string>
+    <string name="setting_hide_summary">While this card is first. Needs Native Smartspace; the notification stays in the shade.</string>
+    <string name="setting_access">Notification access</string>
+    <string name="setting_access_on">On: the card updates while your order is on its way. The plugin reads only Uber Eats and Uber notifications, and from Uber only food orders.</string>
+    <string name="setting_access_off">Off: the card can\'t appear. Tap to turn it on.</string>
+    <string name="setting_access_badge_on">On</string>
+    <string name="setting_access_badge_off">Turn on</string>
+
+    <!-- Preview -->
+    <string name="preview_example">Example order · order food in Uber Eats or Uber to see yours</string>
+
+    <!-- Footer -->
+    <string name="source_code">Source code</string>
+</resources>

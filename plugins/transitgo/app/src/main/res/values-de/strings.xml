@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Transit GO für Smartspacer</string>
+    <string name="target_label">Transit GO</string>
+    <string name="target_description">Zeigt deine aktive Transit-GO-Fahrt</string>
+    <string name="section_card">Karte</string>
+    <string name="section_lock_screen">Sperrbildschirm</string>
+    <string name="section_permissions">Berechtigungen</string>
+    <string name="setting_chip_title">Farbigen Linien-Chip verwenden</string>
+    <string name="setting_chip_summary">Zeigt den farbigen Linien-Chip von Transit auf der Karte statt des Schritt-Symbols.</string>
+    <string name="setting_extra_title">Nach dem nächsten Schritt anzeigen</string>
+    <string name="setting_extra_summary">Fügt die Ankunftszeit (· 6:12) oder die Restzeit der Fahrt (· 4 h 00 min) hinzu</string>
+    <string name="setting_extra_arrival">Ankunftszeit</string>
+    <string name="setting_extra_time_left">Restzeit</string>
+    <string name="setting_extra_none">Aus</string>
+    <string name="setting_hide_title">Benachrichtigung auf dem Sperrbildschirm ausblenden</string>
+    <string name="setting_hide_summary">Solange diese Karte zuerst kommt. Erfordert Native Smartspace; die Benachrichtigung bleibt in der Leiste.</string>
+    <string name="setting_access">Benachrichtigungszugriff</string>
+    <string name="setting_access_on">An: Die Karte wird während deiner GO-Fahrten aktualisiert. Das Plugin liest nur die GO-Benachrichtigung von Transit.</string>
+    <string name="setting_access_off">Aus: Die Karte kann nicht erscheinen. Zum Aktivieren tippen.</string>
+    <string name="setting_access_badge_on">An</string>
+    <string name="setting_access_badge_off">Aktivieren</string>
+    <string name="preview_example">Beispielfahrt · starte GO in Transit, um deine zu sehen</string>
+    <string name="source_code">Quellcode</string>
+</resources>

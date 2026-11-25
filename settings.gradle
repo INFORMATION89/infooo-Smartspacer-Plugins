@@ -18,3 +18,8 @@ rootProject.name = "Smartspacer Plugins"
 include ':shared'
 include ':systemstubs'
 include ':uber'
+include ':ubereats'
+include ':transitgo'
+
+project(':ubereats').projectDir = file('plugins/ubereats/app')
+project(':transitgo').projectDir = file('plugins/transitgo/app')

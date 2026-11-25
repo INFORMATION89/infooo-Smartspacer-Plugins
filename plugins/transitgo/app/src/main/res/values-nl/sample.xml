@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text of the example trip in the settings preview; stops are in this language's capital -->
+<resources>
+    <plurals name="sample_leave_in">
+        <item quantity="one">Vertrek over %d minuut</item>
+        <item quantity="other">Vertrek over %d minuten</item>
+    </plurals>
+    <plurals name="sample_in_minutes">
+        <item quantity="one">over %d minuut</item>
+        <item quantity="other">over %d minuten</item>
+    </plurals>
+    <plurals name="sample_get_off_in">
+        <item quantity="one">Uitstappen over %d halte</item>
+        <item quantity="other">Uitstappen over %d haltes</item>
+    </plurals>
+    <string name="sample_walk">%d min lopen</string>
+    <string name="sample_to">naar %s</string>
+    <plurals name="sample_bikes">
+        <item quantity="one">Nog %d fiets</item>
+        <item quantity="other">Nog %d fietsen</item>
+    </plurals>
+    <string name="sample_walk_to">Loop naar %s</string>
+    <string-array name="sample_stops">
+        <item>Centraal Station</item>
+        <item>Dam</item>
+        <item>Leidseplein</item>
+        <item>Museumplein</item>
+        <item>Rembrandtplein</item>
+        <item>Waterlooplein</item>
+        <item>Rotterdam Centraal</item>
+        <item>Blaak</item>
+        <item>Beurs</item>
+        <item>Utrecht Centraal</item>
+        <item>Neude</item>
+        <item>Vredenburg</item>
+    </string-array>
+</resources>

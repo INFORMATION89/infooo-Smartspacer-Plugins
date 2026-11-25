@@ -1,9 +1,94 @@
-# (Self-)Updated Smartspacer Plugins
+# infooo Smartspacer Plugins
 
-Official [Smartspacer](https://github.com/KieronQuinn/Smartspacer) plugins that stopped working, updated by me with help from Claude so they work again with today's apps. Based on [KieronQuinn/SmartspacerPlugins](https://github.com/KieronQuinn/SmartspacerPlugins), keeping only the plugins I've updated plus the shared code they need; not official, and not affiliated with or supported by Kieron Quinn.
+A collection of independently installable Android plugins for [Smartspacer](https://github.com/KieronQuinn/Smartspacer), maintained in one Gradle repository.
 
-**Uber** ([`uber/`](uber)) shows your ride: pickup time, driver, car and trip progress. The original broke when Uber moved its trip notifications to Android 16 Live Updates; this version reads those (and Uber's old layout when it's still there). Download the APK from the [latest release](../../releases/latest), and uninstall the official Uber plugin first, since this one is signed with a different key. If Google Play Protect blocks it, install it with `adb install` from a computer, or briefly turn off **Scan apps with Play Protect** in the Play Store. To build it yourself: `./gradlew :uber:assembleDebug` with JDK 17+ and the Android 37 SDK.
+This repository keeps the original Uber ride-tracking plugin and adds separate plugins for Uber Eats orders and Transit GO trips. It is an independent community project, not an official Smartspacer release and not affiliated with the source apps.
 
-My new plugins live in their own repos, like **[Transit GO for Smartspacer](https://github.com/INFORMATION89/Transit-GO-Smartspacer)** for your Transit GO trip.
+## Plugins
 
-Licensed under [GPL-3.0](LICENSE), like the original. Original code © Kieron Quinn; my changes are in the commit history.
+| Plugin | Gradle module | Package / application ID | Version | Status |
+|---|---|---|---|---|
+| Uber (rides) | `:uber` | `com.kieronquinn.app.smartspacer.plugin.uber` | 1.1.0 | Existing plugin based on the upstream Smartspacer plugin |
+| [Uber Eats (food orders)](plugins/ubereats/README.md) | `:ubereats` | `dev.marco.smartspacer.ubereats` | 0.1.1 (alpha) | Migrated from the standalone repository; real-order validation still required |
+| [Transit GO](plugins/transitgo/README.md) | `:transitgo` | `dev.marco.smartspacer.transitgo` | 1.3.1 | Migrated from the standalone repository; device validation still required |
+
+**Uber and Uber Eats are different plugins.** `:uber` tracks rides and drivers. `:ubereats` tracks food orders from Uber Eats or the food-order section of the Uber app. They must remain separate Android applications.
+
+## Repository layout
+
+```text
+.
+├── uber/                       # Existing upstream-derived Uber ride plugin
+├── plugins/
+│   ├── ubereats/app/            # Uber Eats Android application module
+│   └── transitgo/app/           # Transit GO Android application module
+├── shared/                      # Existing shared code used by :uber
+├── systemstubs/                 # Existing hidden Android API stubs
+├── .github/workflows/           # Central build and per-plugin release workflows
+├── AGENTS.md                    # Codex / AI contributor entry point
+├── rules.md                     # Repository-wide engineering rules
+├── plan.md                      # Audit findings and roadmap
+└── continue.md                  # Current development handoff
+```
+
+Each plugin has its own module documentation, rules, and handoff under `plugins/<plugin>/`. The three Android applications retain independent application IDs, notification listeners, settings, resources, versions, and release assets.
+
+## Build
+
+Requirements: JDK 21 and Android SDK platform 37. Run commands from the repository root.
+
+```bash
+# Existing Uber ride plugin
+./gradlew :uber:assembleDebug
+
+# Uber Eats
+./gradlew :ubereats:testDebugUnitTest :ubereats:lintRelease :ubereats:assembleRelease
+
+# Transit GO
+./gradlew :transitgo:testDebugUnitTest :transitgo:lintRelease :transitgo:assembleRelease
+
+# All maintained applications
+./gradlew :uber:assembleDebug :ubereats:assembleRelease :transitgo:assembleRelease
+```
+
+On Windows PowerShell, use the Gradle wrapper batch file:
+
+```powershell
+.\gradlew.bat :uber:assembleDebug
+.\gradlew.bat :ubereats:testDebugUnitTest :ubereats:lintRelease :ubereats:assembleRelease
+.\gradlew.bat :transitgo:testDebugUnitTest :transitgo:lintRelease :transitgo:assembleRelease
+```
+
+APK output locations:
+
+- Uber Eats: `plugins/ubereats/app/build/outputs/apk/`
+- Transit GO: `plugins/transitgo/app/build/outputs/apk/`
+- Uber rides: `apks/` (as configured by the existing module)
+
+GitHub Actions runs each module's unit-test task, release lint for all three apps, and independent APK builds on pull requests and relevant pushes. Only `:ubereats` and `:transitgo` currently have unit-test source sets; `:uber`'s test task is invoked but has no imported tests. CI uploads separate `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin` artifacts. These are test builds, not official releases, and may use a debug signing key.
+
+## Installation and releases
+
+Each plugin has an independent tag namespace and APK:
+
+- Uber rides: `uber-v<version>`
+- Uber Eats: `ubereats-v<version>`
+- Transit GO: `transitgo-v<version>`
+
+The matching release workflow builds and attaches only that plugin's APK. No release is published merely by merging code. Existing release history in the former standalone repositories remains available; this migration does not delete or archive those repositories.
+
+Install only APKs from the relevant GitHub release. Do not disable Play Protect to install a plugin. A CI-signed APK may not install over a release signed with the permanent release key.
+
+## Privacy and integration boundaries
+
+- Each plugin reads only the source-app notifications it needs.
+- Preserve the absence of Internet permission unless a separately reviewed product requirement justifies a change.
+- Never log raw order or trip text, notification keys, courier/driver details, location data, or images.
+- Never dismiss, modify, or cancel source-app notifications.
+- Notification layouts, extras, package names, and channel identifiers owned by third-party apps are integration assumptions, not stable APIs.
+
+See [rules.md](rules.md), [plan.md](plan.md), and [continue.md](continue.md) before contributing. The source revisions and move details are recorded in [docs/MIGRATION.md](docs/MIGRATION.md).
+
+## Licenses and attribution
+
+The repository is licensed under GPL-3.0 unless a component's own license says otherwise. The existing `:uber`, `:shared`, and `:systemstubs` modules retain their upstream attribution. See [LICENSE](LICENSE) and module-level notices.

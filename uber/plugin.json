@@ -1,8 +1,11 @@
 {
-	"description": "Using data from the Uber app, this plugin shows ride tracking and car information in a Target. Know exactly when your driver will arrive, their registration and their image for verification without needing to unlock your device",
-	"download_url": "https://github.com/KieronQuinn/SmartspacerPlugins/releases/download/uber/uber-release.apk",
-	"version_code": 102,
-	"changelog": "- Support Uber's redesigned (Android 16 Live Updates) trip notifications\n- Allow adding Target more than once",
-	"required_package": "com.ubercab",
-	"screenshots": ["https://raw.githubusercontent.com/KieronQuinn/SmartspacerPlugins/main/uber/screenshots/1.jpg", "https://raw.githubusercontent.com/KieronQuinn/SmartspacerPlugins/main/uber/screenshots/2.jpg"]
+  "description": "Using data from the Uber app, this plugin shows ride tracking and car information in a Smartspacer Target. Know when your driver will arrive, their registration, and their image for verification.",
+  "download_url": "https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/releases/download/uber-v1.1.0/uber-smartspacer-v1.1.0.apk",
+  "version_code": 110,
+  "changelog": "- Works with Uber's current trip notifications (Android 16 Live Updates)\n- Still reads Uber's older notification layout when available\n- Shows only the notification that looks like your active trip\n- Falls back to a simple text card if the trip card cannot be drawn",
+  "required_package": "com.ubercab",
+  "screenshots": [
+    "https://raw.githubusercontent.com/KieronQuinn/SmartspacerPlugins/main/uber/screenshots/1.jpg",
+    "https://raw.githubusercontent.com/KieronQuinn/SmartspacerPlugins/main/uber/screenshots/2.jpg"
+  ]
 }

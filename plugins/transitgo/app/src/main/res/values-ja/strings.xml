@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Transit GO for Smartspacer</string>
+    <string name="target_label">Transit GO</string>
+    <string name="target_description">進行中の Transit GO の移動を表示します</string>
+    <string name="section_card">カード</string>
+    <string name="section_lock_screen">ロック画面</string>
+    <string name="section_permissions">権限</string>
+    <string name="setting_chip_title">カラーの路線チップを使う</string>
+    <string name="setting_chip_summary">ステップのアイコンの代わりに、Transit のカラーの路線チップをカードに表示します。</string>
+    <string name="setting_extra_title">次のステップの後に表示</string>
+    <string name="setting_extra_summary">到着時刻（· 6:12）または移動の残り時間（· 4 時間 00 分）を追加します</string>
+    <string name="setting_extra_arrival">到着時刻</string>
+    <string name="setting_extra_time_left">残り時間</string>
+    <string name="setting_extra_none">オフ</string>
+    <string name="setting_hide_title">ロック画面で通知を非表示</string>
+    <string name="setting_hide_summary">このカードが先頭にある間。Native Smartspace が必要です。通知は通知シェードに残ります。</string>
+    <string name="setting_access">通知へのアクセス</string>
+    <string name="setting_access_on">オン：GO での移動中にカードが更新されます。このプラグインは Transit の GO 通知だけを読み取ります。</string>
+    <string name="setting_access_off">オフ：カードを表示できません。タップしてオンにしてください。</string>
+    <string name="setting_access_badge_on">オン</string>
+    <string name="setting_access_badge_off">オンにする</string>
+    <string name="preview_example">移動の例 · Transit で GO を開始すると自分の移動が表示されます</string>
+    <string name="source_code">ソースコード</string>
+</resources>

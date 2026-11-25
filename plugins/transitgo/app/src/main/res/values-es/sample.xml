@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text of the example trip in the settings preview, worded like Transit (Spanish) -->
+<resources>
+    <plurals name="sample_leave_in">
+        <item quantity="one">Sal en %d minuto</item>
+        <item quantity="many">Sal en %d minutos</item>
+        <item quantity="other">Sal en %d minutos</item>
+    </plurals>
+    <plurals name="sample_in_minutes">
+        <item quantity="one">en %d minuto</item>
+        <item quantity="many">en %d minutos</item>
+        <item quantity="other">en %d minutos</item>
+    </plurals>
+    <plurals name="sample_get_off_in">
+        <item quantity="one">Baja en %d parada</item>
+        <item quantity="many">Baja en %d paradas</item>
+        <item quantity="other">Baja en %d paradas</item>
+    </plurals>
+    <string name="sample_walk">Camina %d min</string>
+    <string name="sample_to">hasta %s</string>
+    <plurals name="sample_bikes">
+        <item quantity="one">%d bici restante</item>
+        <item quantity="many">%d bicis restantes</item>
+        <item quantity="other">%d bicis restantes</item>
+    </plurals>
+    <string name="sample_walk_to">Camina hasta %s</string>
+    <string-array name="sample_stops">
+        <item>Zócalo</item>
+        <item>Bellas Artes</item>
+        <item>Paseo de la Reforma</item>
+        <item>Insurgentes Sur</item>
+        <item>Chapultepec</item>
+        <item>Glorieta de Colón</item>
+        <item>Plaza de la Liberación</item>
+        <item>Av. Chapultepec</item>
+        <item>La Minerva</item>
+        <item>Macroplaza</item>
+        <item>Parque Fundidora</item>
+        <item>Av. Constitución</item>
+    </string-array>
+</resources>

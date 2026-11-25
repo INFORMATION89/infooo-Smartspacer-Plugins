@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Transit GO voor Smartspacer</string>
+    <string name="target_label">Transit GO</string>
+    <string name="target_description">Toont je actieve Transit GO-reis</string>
+    <string name="section_card">Kaart</string>
+    <string name="section_lock_screen">Vergrendelscherm</string>
+    <string name="section_permissions">Rechten</string>
+    <string name="setting_chip_title">Gekleurde lijnchip gebruiken</string>
+    <string name="setting_chip_summary">Toont de gekleurde lijnchip van Transit op de kaart in plaats van het stapicoon.</string>
+    <string name="setting_extra_title">Tonen na volgende stap</string>
+    <string name="setting_extra_summary">Voegt de aankomsttijd (· 6:12) of de resterende reistijd (· 4 u 00 min) toe</string>
+    <string name="setting_extra_arrival">Aankomsttijd</string>
+    <string name="setting_extra_time_left">Resterende tijd</string>
+    <string name="setting_extra_none">Uit</string>
+    <string name="setting_hide_title">Melding op vergrendelscherm verbergen</string>
+    <string name="setting_hide_summary">Zolang deze kaart bovenaan staat. Vereist Native Smartspace; de melding blijft in het meldingenpaneel.</string>
+    <string name="setting_access">Toegang tot meldingen</string>
+    <string name="setting_access_on">Aan: de kaart wordt bijgewerkt tijdens je GO-reizen. De plug-in leest alleen de GO-melding van Transit.</string>
+    <string name="setting_access_off">Uit: de kaart kan niet verschijnen. Tik om aan te zetten.</string>
+    <string name="setting_access_badge_on">Aan</string>
+    <string name="setting_access_badge_off">Aanzetten</string>
+    <string name="preview_example">Voorbeeldreis · start GO in Transit om de jouwe te zien</string>
+    <string name="source_code">Broncode</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text of the example trip in the settings preview; stops are in this language's capital -->
+<resources>
+    <plurals name="sample_leave_in">
+        <item quantity="other">%d 分钟后出发</item>
+    </plurals>
+    <plurals name="sample_in_minutes">
+        <item quantity="other">%d 分钟后</item>
+    </plurals>
+    <plurals name="sample_get_off_in">
+        <item quantity="other">%d 站后下车</item>
+    </plurals>
+    <string name="sample_walk">步行 %d 分钟</string>
+    <string name="sample_to">前往 %s</string>
+    <plurals name="sample_bikes">
+        <item quantity="other">剩余 %d 辆</item>
+    </plurals>
+    <string name="sample_walk_to">步行至 %s</string>
+    <string-array name="sample_stops">
+        <item>天安门东</item>
+        <item>北京站</item>
+        <item>王府井</item>
+        <item>西单</item>
+        <item>国贸</item>
+        <item>北京西站</item>
+        <item>人民广场</item>
+        <item>陆家嘴</item>
+        <item>南京东路</item>
+        <item>广州塔</item>
+        <item>体育西路</item>
+        <item>公园前</item>
+    </string-array>
+</resources>

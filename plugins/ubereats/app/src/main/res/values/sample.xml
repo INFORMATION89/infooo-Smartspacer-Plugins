@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text of the example order in the settings preview, worded like a delivery app (English).
+     Restaurants and couriers are made up. -->
+<resources>
+    <string name="sample_preparing">Preparing your order</string>
+    <string name="sample_picking_up">%s is picking up your order</string>
+    <string name="sample_arriving_at">Arriving at %s</string>
+    <string name="sample_on_the_way">%s is heading your way</string>
+    <string name="sample_almost_there">Almost there</string>
+    <string name="sample_nearby">%s is nearby</string>
+    <string-array name="sample_restaurants">
+        <item>Corner Noodle House</item>
+        <item>Brick Oven Pizza Co.</item>
+        <item>Green Bowl Kitchen</item>
+        <item>Smash Burger Lab</item>
+        <item>Sushi Hana</item>
+        <item>Pho 88</item>
+        <item>Taqueria La Esquina</item>
+        <item>Morning Bagel Bar</item>
+    </string-array>
+    <string-array name="sample_couriers">
+        <item>Luis</item>
+        <item>Ana</item>
+        <item>James</item>
+        <item>Priya</item>
+        <item>Marcus</item>
+        <item>Sofia</item>
+        <item>Kenji</item>
+        <item>Emma</item>
+    </string-array>
+</resources>
