@@ -120,12 +120,12 @@ Only after behavioral parity and ownership are clear, consider sharing Compose U
 
 - PR workflow run [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) completed successfully. Unit tests, lint, the three plugin builds, and all three artifact uploads passed.
 - The artifacts were `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
-- The original `:uber` module has no imported unit-test source set. It was built as a debug APK; `:uber:lintRelease` has been added to central CI and is being validated in Build suite #10.
+- The original `:uber` module has no imported unit-test source set. The current workflow invokes its test task (which therefore has no plugin-owned tests to execute), runs release lint for all three apps, and builds all three APKs. Always inspect the latest PR run for the current head.
 
 ### Remaining audit findings
 
 - Uber Eats still has a large, concentrated `SettingsActivity.kt`; refactor it in a separate behavior-preserving task after migration validation.
-- Uber Eats now has pure-Kotlin tests for bounded notification-key storage, food-channel/text classification, English/Spanish wording, ride rejection, and current score weights. Android notification event integration (ETA-only updates, candidate selection, removals/reconnection) still needs synthetic adapter/state tests.
+- Uber Eats now has pure-Kotlin tests for bounded notification-key storage, food-channel/text classification, English/Spanish wording, mixed food-and-ride rejection, and current score weights. Android notification event integration (ETA-only updates, candidate selection, removals/reconnection) still needs synthetic adapter/state tests.
 - **Addressed in the migration branch:** Uber Eats candidates are capped at 16; remembered food-order keys are capped at 32; both expire after 12 hours. Tests cover remembered-key expiry, capacity, refresh, removal and clearing.
 - Transit GO relies on private Transit RemoteViews layouts and resource IDs. This remains inherently fragile and requires real-device validation after Transit app updates.
 - Both apps require real notification/device checks; successful CI does not validate live order/trip behavior, RemoteViews rendering, screen density, settings gestures, or preference persistence.
@@ -134,3 +134,16 @@ Only after behavioral parity and ownership are clear, consider sharing Compose U
 ### Migration documentation correction
 
 The root `continue.md` now reflects that Gradle module wiring and the initial CI workflow are already present. Its remaining steps focus on final CI/artifact verification, audit completion, documentation accuracy and device validation.
+
+
+## Audit update — 2026-11-25
+
+- Rechecked PR #2: it is open, mergeable, and still a draft. The branch was exactly up to date with `main` at comparison time (12 commits ahead, 0 behind); recheck immediately before merging.
+- No PR comments, submitted reviews, or inline review threads were present at audit time.
+- Added `:uber:testDebugUnitTest` to the root test step so CI invokes tests for all three Android apps. Only `:ubereats` and `:transitgo` currently contain unit-test source sets; `:uber` has no tests to execute.
+- Added a synthetic Uber Eats classifier regression for mixed food and ride wording from the Uber app.
+- Extended workflow path filters to run the suite for root and per-plugin documentation changes, keeping the final handoff/plan update covered by CI.
+- Static review confirmed distinct application IDs, provider authorities, notification listener components, and version metadata for all three apps; imported manifests contain only package-visibility queries and no Internet permission. No cross-plugin runtime dependency was found.
+- Uber Eats filters by supported source package before parsing and scopes removal callbacks; Transit GO filters by package and `go_mode` channel before parsing. Both clear in-memory state on listener disconnection. Diagnostics inspected do not log notification content or full notification keys.
+- Remaining device-only validation is documented above. Do not claim live notification behavior, private Transit RemoteViews compatibility, UI rendering, or settings persistence as validated by CI.
+- The current branch head includes CI and test changes; use the current PR Actions run for final evidence. Merge only after the latest run succeeds and the branch remains current with `main`. The user has already authorized the merge under those conditions.
