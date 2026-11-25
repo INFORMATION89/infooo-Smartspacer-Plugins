@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text of the example trip in the settings preview; stops are in this language's capital -->
+<resources>
+    <plurals name="sample_leave_in">
+        <item quantity="one">Parti tra %d minuto</item>
+        <item quantity="other">Parti tra %d minuti</item>
+    </plurals>
+    <plurals name="sample_in_minutes">
+        <item quantity="one">tra %d minuto</item>
+        <item quantity="other">tra %d minuti</item>
+    </plurals>
+    <plurals name="sample_get_off_in">
+        <item quantity="one">Scendi tra %d fermata</item>
+        <item quantity="other">Scendi tra %d fermate</item>
+    </plurals>
+    <string name="sample_walk">Cammina %d min</string>
+    <string name="sample_to">verso %s</string>
+    <plurals name="sample_bikes">
+        <item quantity="one">%d bici rimasta</item>
+        <item quantity="other">%d bici rimaste</item>
+    </plurals>
+    <string name="sample_walk_to">Cammina fino a %s</string>
+    <string-array name="sample_stops">
+        <item>Termini</item>
+        <item>Piazza Venezia</item>
+        <item>Colosseo</item>
+        <item>Piazza del Popolo</item>
+        <item>Largo Argentina</item>
+        <item>San Pietro</item>
+        <item>Duomo</item>
+        <item>Cadorna</item>
+        <item>Porta Garibaldi</item>
+        <item>Piazza Garibaldi</item>
+        <item>Toledo</item>
+        <item>Municipio</item>
+    </string-array>
+</resources>

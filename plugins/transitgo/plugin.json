@@ -1,0 +1,8 @@
+{
+  "description": "Shows an active Transit GO trip as a Smartspacer Target, including the current instruction, route chip or step icon, and arrival or time-left information.",
+  "download_url": "https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/releases/download/transitgo-v1.3.1/transit-go-smartspacer-transitgo-v1.3.1.apk",
+  "version_code": 10301,
+  "changelog": "Monorepo migration of Transit GO for Smartspacer 1.3.1.",
+  "required_package": "com.thetransitapp.droid",
+  "screenshots": []
+}

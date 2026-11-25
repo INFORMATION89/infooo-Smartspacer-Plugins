@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text of the example trip in the settings preview; stops are in this language's capital -->
+<resources>
+    <plurals name="sample_leave_in">
+        <item quantity="one">Partez dans %d minute</item>
+        <item quantity="other">Partez dans %d minutes</item>
+    </plurals>
+    <plurals name="sample_in_minutes">
+        <item quantity="one">dans %d minute</item>
+        <item quantity="other">dans %d minutes</item>
+    </plurals>
+    <plurals name="sample_get_off_in">
+        <item quantity="one">Descendez dans %d arrêt</item>
+        <item quantity="other">Descendez dans %d arrêts</item>
+    </plurals>
+    <string name="sample_walk">Marchez %d min</string>
+    <string name="sample_to">vers %s</string>
+    <plurals name="sample_bikes">
+        <item quantity="one">%d vélo restant</item>
+        <item quantity="other">%d vélos restants</item>
+    </plurals>
+    <string name="sample_walk_to">Marchez jusqu\'à %s</string>
+    <string-array name="sample_stops">
+        <item>Châtelet</item>
+        <item>Gare du Nord</item>
+        <item>République</item>
+        <item>Bastille</item>
+        <item>Opéra</item>
+        <item>Saint-Michel Notre-Dame</item>
+        <item>Bellecour</item>
+        <item>Part-Dieu</item>
+        <item>Hôtel de Ville – Louis Pradel</item>
+        <item>Vieux-Port</item>
+        <item>Gare Saint-Charles</item>
+        <item>Castellane</item>
+    </string-array>
+</resources>

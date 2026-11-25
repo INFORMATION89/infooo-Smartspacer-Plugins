@@ -1,0 +1,8 @@
+{
+  "description": "Shows supported live Uber Eats food orders from the Uber Eats app or the food-order section of the Uber app as a Smartspacer Target.",
+  "download_url": "https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/releases/download/ubereats-v0.1.1/uber-eats-smartspacer-ubereats-v0.1.1.apk",
+  "version_code": 101,
+  "changelog": "Monorepo migration of Uber Eats for Smartspacer 0.1.1.",
+  "required_package": "com.ubercab.eats",
+  "screenshots": []
+}

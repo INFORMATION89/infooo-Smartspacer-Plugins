@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Transit GO para Smartspacer</string>
+    <string name="target_label">Transit GO</string>
+    <string name="target_description">Muestra tu viaje activo de Transit GO</string>
+
+    <!-- Ajustes -->
+    <string name="section_card">Tarjeta</string>
+    <string name="section_lock_screen">Pantalla de bloqueo</string>
+    <string name="section_permissions">Permisos</string>
+    <string name="setting_chip_title">Usar chip de color</string>
+    <string name="setting_chip_summary">Muestra el chip de color de la ruta de Transit en la tarjeta en lugar del ícono del paso.</string>
+    <string name="setting_extra_title">Mostrar después del siguiente paso</string>
+    <string name="setting_extra_summary">Agrega la hora de llegada (· 6:12 a.m.) o el tiempo restante del viaje (· 4 h 00 min)</string>
+    <string name="setting_extra_arrival">Llegada</string>
+    <string name="setting_extra_time_left">Restante</string>
+    <string name="setting_extra_none">Nada</string>
+    <string name="setting_hide_title">Ocultar notificación en la pantalla de bloqueo</string>
+    <string name="setting_hide_summary">Mientras esta tarjeta sea la primera. Requiere Native Smartspace; la notificación sigue en el panel.</string>
+    <string name="setting_access">Acceso a notificaciones</string>
+    <string name="setting_access_on">Activado: la tarjeta se actualiza durante tus viajes GO. El plugin solo lee la notificación GO de Transit.</string>
+    <string name="setting_access_off">Desactivado: la tarjeta no puede aparecer. Toca para activarlo.</string>
+    <string name="setting_access_badge_on">Activado</string>
+    <string name="setting_access_badge_off">Activar</string>
+
+    <!-- Vista previa -->
+    <string name="preview_example">Viaje de ejemplo · inicia GO en Transit para ver el tuyo</string>
+
+    <!-- Pie -->
+    <string name="source_code">Código fuente</string>
+</resources>

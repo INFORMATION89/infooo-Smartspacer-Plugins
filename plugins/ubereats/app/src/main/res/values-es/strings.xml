@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Uber Eats para Smartspacer</string>
+    <string name="target_label">Uber Eats</string>
+    <string name="target_description">Muestra tu pedido de Uber Eats en camino</string>
+
+    <!-- Settings -->
+    <string name="section_card">Tarjeta</string>
+    <string name="section_lock_screen">Pantalla de bloqueo</string>
+    <string name="section_permissions">Permisos</string>
+    <string name="setting_courier_title">Mostrar foto del repartidor</string>
+    <string name="setting_courier_summary">Cuando un repartidor tiene tu pedido, muestra su foto en la tarjeta en lugar del ícono de la app.</string>
+    <string name="setting_extra_title">Mostrar después de los detalles</string>
+    <string name="setting_extra_summary">Agrega el tiempo restante (· 12 min) o qué tan avanzado va tu pedido (· 60%)</string>
+    <string name="setting_extra_time_left">Tiempo restante</string>
+    <string name="setting_extra_progress">Progreso</string>
+    <string name="setting_extra_none">No</string>
+    <string name="setting_hide_title">Ocultar notificación en la pantalla de bloqueo</string>
+    <string name="setting_hide_summary">Mientras esta tarjeta sea la primera. Necesita Native Smartspace; la notificación sigue en el panel.</string>
+    <string name="setting_access">Acceso a notificaciones</string>
+    <string name="setting_access_on">Activado: la tarjeta se actualiza mientras tu pedido va en camino. El plugin solo lee las notificaciones de Uber Eats y Uber, y de Uber solo los pedidos de comida.</string>
+    <string name="setting_access_off">Desactivado: la tarjeta no puede aparecer. Toca para activarlo.</string>
+    <string name="setting_access_badge_on">Activado</string>
+    <string name="setting_access_badge_off">Activar</string>
+
+    <!-- Preview -->
+    <string name="preview_example">Pedido de ejemplo · pide comida en Uber Eats o Uber para ver el tuyo</string>
+
+    <!-- Footer -->
+    <string name="source_code">Código fuente</string>
+</resources>

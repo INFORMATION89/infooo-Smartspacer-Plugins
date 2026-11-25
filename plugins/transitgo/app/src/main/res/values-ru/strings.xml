@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Transit GO для Smartspacer</string>
+    <string name="target_label">Transit GO</string>
+    <string name="target_description">Показывает вашу текущую поездку Transit GO</string>
+    <string name="section_card">Карточка</string>
+    <string name="section_lock_screen">Экран блокировки</string>
+    <string name="section_permissions">Разрешения</string>
+    <string name="setting_chip_title">Цветной значок маршрута</string>
+    <string name="setting_chip_summary">Показывает на карточке цветной значок маршрута Transit вместо значка шага.</string>
+    <string name="setting_extra_title">Показывать после следующего шага</string>
+    <string name="setting_extra_summary">Добавляет время прибытия (· 6:12) или оставшееся время поездки (· 4 ч 00 мин)</string>
+    <string name="setting_extra_arrival">Время прибытия</string>
+    <string name="setting_extra_time_left">Осталось</string>
+    <string name="setting_extra_none">Выкл.</string>
+    <string name="setting_hide_title">Скрывать уведомление на экране блокировки</string>
+    <string name="setting_hide_summary">Пока эта карточка первая. Нужен Native Smartspace; уведомление остаётся в шторке.</string>
+    <string name="setting_access">Доступ к уведомлениям</string>
+    <string name="setting_access_on">Вкл.: карточка обновляется во время поездок GO. Плагин читает только уведомление GO от Transit.</string>
+    <string name="setting_access_off">Выкл.: карточка не может появиться. Нажмите, чтобы включить.</string>
+    <string name="setting_access_badge_on">Вкл.</string>
+    <string name="setting_access_badge_off">Включить</string>
+    <string name="preview_example">Пример поездки · запустите GO в Transit, чтобы увидеть свою</string>
+    <string name="source_code">Исходный код</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text of the example trip in the settings preview; stops are in this language's capital -->
+<resources>
+    <plurals name="sample_leave_in">
+        <item quantity="one">Saia em %d minuto</item>
+        <item quantity="other">Saia em %d minutos</item>
+    </plurals>
+    <plurals name="sample_in_minutes">
+        <item quantity="one">em %d minuto</item>
+        <item quantity="other">em %d minutos</item>
+    </plurals>
+    <plurals name="sample_get_off_in">
+        <item quantity="one">Desça em %d parada</item>
+        <item quantity="other">Desça em %d paradas</item>
+    </plurals>
+    <string name="sample_walk">Caminhe %d min</string>
+    <string name="sample_to">até %s</string>
+    <plurals name="sample_bikes">
+        <item quantity="one">%d bicicleta restante</item>
+        <item quantity="other">%d bicicletas restantes</item>
+    </plurals>
+    <string name="sample_walk_to">Caminhe até %s</string>
+    <string-array name="sample_stops">
+        <item>Rodoviária do Plano Piloto</item>
+        <item>Esplanada dos Ministérios</item>
+        <item>Setor Comercial Sul</item>
+        <item>Praça dos Três Poderes</item>
+        <item>W3 Sul</item>
+        <item>Asa Norte</item>
+        <item>Av. Paulista</item>
+        <item>Sé</item>
+        <item>Estação da Luz</item>
+        <item>Central do Brasil</item>
+        <item>Copacabana</item>
+        <item>Cinelândia</item>
+    </string-array>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Transit GO for Smartspacer</string>
+    <string name="target_label">Transit GO</string>
+    <string name="target_description">显示正在进行的 Transit GO 行程</string>
+    <string name="section_card">卡片</string>
+    <string name="section_lock_screen">锁定屏幕</string>
+    <string name="section_permissions">权限</string>
+    <string name="setting_chip_title">使用彩色线路标签</string>
+    <string name="setting_chip_summary">在卡片上显示 Transit 的彩色线路标签，而不是步骤图标。</string>
+    <string name="setting_extra_title">在下一步之后显示</string>
+    <string name="setting_extra_summary">添加到达时间（· 6:12）或行程剩余时间（· 4 小时 00 分钟）</string>
+    <string name="setting_extra_arrival">到达时间</string>
+    <string name="setting_extra_time_left">剩余时间</string>
+    <string name="setting_extra_none">关闭</string>
+    <string name="setting_hide_title">在锁定屏幕上隐藏通知</string>
+    <string name="setting_hide_summary">当此卡片排在第一位时。需要 Native Smartspace；通知仍会保留在通知栏中。</string>
+    <string name="setting_access">通知使用权</string>
+    <string name="setting_access_on">已开启：在 GO 行程中卡片会实时更新。此插件只读取 Transit 的 GO 通知。</string>
+    <string name="setting_access_off">已关闭：卡片无法显示。点按即可开启。</string>
+    <string name="setting_access_badge_on">已开启</string>
+    <string name="setting_access_badge_off">开启</string>
+    <string name="preview_example">示例行程 · 在 Transit 中开始 GO 即可看到你的行程</string>
+    <string name="source_code">源代码</string>
+</resources>

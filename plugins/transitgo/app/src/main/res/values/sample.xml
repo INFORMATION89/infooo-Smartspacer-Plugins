@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text of the example trip in the settings preview, worded like Transit (English) -->
+<resources>
+    <plurals name="sample_leave_in">
+        <item quantity="one">Leave in %d minute</item>
+        <item quantity="other">Leave in %d minutes</item>
+    </plurals>
+    <plurals name="sample_in_minutes">
+        <item quantity="one">in %d minute</item>
+        <item quantity="other">in %d minutes</item>
+    </plurals>
+    <plurals name="sample_get_off_in">
+        <item quantity="one">Get off in %d stop</item>
+        <item quantity="other">Get off in %d stops</item>
+    </plurals>
+    <string name="sample_walk">Walk %d min</string>
+    <string name="sample_to">to %s</string>
+    <plurals name="sample_bikes">
+        <item quantity="one">%d bike left</item>
+        <item quantity="other">%d bikes left</item>
+    </plurals>
+    <string name="sample_walk_to">Walk to %s</string>
+    <string-array name="sample_stops">
+        <item>Union Station</item>
+        <item>Metro Center</item>
+        <item>Dupont Circle</item>
+        <item>Pennsylvania Ave &amp; 14th St</item>
+        <item>Foggy Bottom</item>
+        <item>L\'Enfant Plaza</item>
+        <item>Times Sq-42 St</item>
+        <item>Grand Central</item>
+        <item>Union Sq</item>
+        <item>Clark/Lake</item>
+        <item>Navy Pier</item>
+        <item>Wrigley Field</item>
+    </string-array>
+</resources>

@@ -1,20 +1,9 @@
-# Builds the Uber plugin APK on GitHub, so no local Android Studio setup is needed.
-# Run it from the Actions tab ("Build Uber plugin" > Run workflow), then download the
-# "uber-plugin" artifact from the finished run.
-name: Build Uber plugin
+# The root Build Plugins workflow builds all maintained applications on pushes and pull requests.
+# Keep this workflow as a manual, focused build for the original Uber ride-tracking plugin.
+name: Build original Uber plugin
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'uber/**'
-      - 'shared/**'
-      - 'systemstubs/**'
-      - 'build.gradle'
-      - 'settings.gradle'
-      - 'gradle.properties'
-      - 'gradle/**'
-      - '.github/workflows/build-uber.yml'
 
 jobs:
   build:
@@ -31,7 +20,6 @@ jobs:
 
       - name: Build debug APK
         run: |
-          # The runner image ships the Android SDK; AGP downloads any missing platform
           echo "sdk.dir=$ANDROID_HOME" > local.properties
           chmod +x gradlew
           ./gradlew :uber:assembleDebug --stacktrace
@@ -39,7 +27,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: uber-plugin
-          path: |
-            apks/*.apk
-            uber/build/outputs/apk/**/*.apk
+          path: apks/*.apk
           if-no-files-found: error

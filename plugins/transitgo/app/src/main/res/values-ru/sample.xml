@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text of the example trip in the settings preview; stops are in this language's capital -->
+<resources>
+    <plurals name="sample_leave_in">
+        <item quantity="one">Выходите через %d минуту</item>
+        <item quantity="few">Выходите через %d минуты</item>
+        <item quantity="many">Выходите через %d минут</item>
+        <item quantity="other">Выходите через %d минуты</item>
+    </plurals>
+    <plurals name="sample_in_minutes">
+        <item quantity="one">через %d минуту</item>
+        <item quantity="few">через %d минуты</item>
+        <item quantity="many">через %d минут</item>
+        <item quantity="other">через %d минуты</item>
+    </plurals>
+    <plurals name="sample_get_off_in">
+        <item quantity="one">Выход через %d остановку</item>
+        <item quantity="few">Выход через %d остановки</item>
+        <item quantity="many">Выход через %d остановок</item>
+        <item quantity="other">Выход через %d остановки</item>
+    </plurals>
+    <string name="sample_walk">Пешком %d мин</string>
+    <string name="sample_to">до %s</string>
+    <plurals name="sample_bikes">
+        <item quantity="one">Остался %d велосипед</item>
+        <item quantity="few">Осталось %d велосипеда</item>
+        <item quantity="many">Осталось %d велосипедов</item>
+        <item quantity="other">Осталось %d велосипеда</item>
+    </plurals>
+    <string name="sample_walk_to">Идите до %s</string>
+    <string-array name="sample_stops">
+        <item>Охотный Ряд</item>
+        <item>Театральная</item>
+        <item>Площадь Революции</item>
+        <item>Киевская</item>
+        <item>Комсомольская</item>
+        <item>Тверская</item>
+        <item>Невский проспект</item>
+        <item>Гостиный двор</item>
+        <item>Площадь Восстания</item>
+        <item>Кремлёвская</item>
+        <item>Площадь Тукая</item>
+        <item>Суконная слобода</item>
+    </string-array>
+</resources>

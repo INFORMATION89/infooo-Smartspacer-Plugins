@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Transit GO for Smartspacer</string>
+    <string name="target_label">Transit GO</string>
+    <string name="target_description">Shows your active Transit GO trip</string>
+
+    <!-- Settings -->
+    <string name="section_card">Card</string>
+    <string name="section_lock_screen">Lock screen</string>
+    <string name="section_permissions">Permissions</string>
+    <string name="setting_chip_title">Use colorful chip</string>
+    <string name="setting_chip_summary">Shows Transit\'s colored route chip on the card instead of the step icon.</string>
+    <string name="setting_extra_title">Show After Next Step</string>
+    <string name="setting_extra_summary">Adds the arrival time (· 6:12 AM) or the time left in the trip (· 4 h 00 min)</string>
+    <string name="setting_extra_arrival">Arrival Time</string>
+    <string name="setting_extra_time_left">Time left</string>
+    <string name="setting_extra_none">Off</string>
+    <string name="setting_hide_title">Hide notification on lock screen</string>
+    <string name="setting_hide_summary">While this card is first. Needs Native Smartspace; the notification stays in the shade.</string>
+    <string name="setting_access">Notification access</string>
+    <string name="setting_access_on">On: the card updates during your GO trips. The plugin reads only Transit\'s GO notification.</string>
+    <string name="setting_access_off">Off: the card can\'t appear. Tap to turn it on.</string>
+    <string name="setting_access_badge_on">On</string>
+    <string name="setting_access_badge_off">Turn on</string>
+
+    <!-- Preview -->
+    <string name="preview_example">Example trip · start GO in Transit to see yours</string>
+
+    <!-- Footer -->
+    <string name="source_code">Source code</string>
+
+</resources>

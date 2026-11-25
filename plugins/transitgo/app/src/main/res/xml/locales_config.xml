@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Languages offered in Android's per-app language setting (Settings > Apps > App languages),
+     so the plugin's example trip can match Transit's language -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="es" />
+    <locale android:name="fr" />
+    <locale android:name="pt" />
+    <locale android:name="de" />
+    <locale android:name="it" />
+    <locale android:name="nl" />
+    <locale android:name="ja" />
+    <locale android:name="zh" />
+    <locale android:name="ru" />
+</locale-config>
