@@ -43,9 +43,13 @@ Consolidate the maintained Smartspacer plugins into one Gradle repository withou
 
 ## Findings and priorities
 
-### P1 — Complete the monorepo Gradle migration
+### P1 — Complete the monorepo Gradle migration <sub>Implemented; CI passed</sub>
 
-Root Gradle configuration and CI must build each independent app. Ensure project directories, Kotlin Compose plugin registration, release task paths, artifact names, and tag filters are correct. A CI success in a standalone repository does not prove the new monorepo build works.
+The root Gradle build now includes the existing `:uber` module plus independent `:ubereats` and `:transitgo` applications under `plugins/`. The root Kotlin Compose compiler plugin is registered centrally. The root workflow runs available tests and lint, builds all three applications, and uploads a separate artifact for each.
+
+Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) completed successfully: tests, lint, all three APK builds, and all three artifact uploads passed. It produced `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
+
+The source repositories' wrappers and root Gradle files were not copied. The monorepo owns the root wrapper and settings. Follow-up workflow runs check later metadata and release-workflow changes. Central CI is being extended with `:uber:lintRelease`; the original `:uber` module has no imported unit-test source set.
 
 ### P1 — Uber Eats notification diagnostics
 
@@ -114,9 +118,9 @@ Only after behavioral parity and ownership are clear, consider sharing Compose U
 
 ### CI evidence
 
-- PR workflow run [#6](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716970751) reported both imported modules' unit tests and release lint as successful.
-- At the time of this audit, the APK build step was still running and artifact uploads had not yet been confirmed. The workflow must not be called fully green until its final conclusion is success and all three artifacts are present.
-- The root workflow currently runs unit tests and lint for `:ubereats` and `:transitgo`; the original `:uber` module has no corresponding unit-test suite in this migration and is built as a debug APK. Consider adding `:uber:lintRelease` after confirming its compatibility with the current root toolchain.
+- PR workflow run [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) completed successfully. Unit tests, lint, the three plugin builds, and all three artifact uploads passed.
+- The artifacts were `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
+- The original `:uber` module has no imported unit-test source set. It was built as a debug APK; `:uber:lintRelease` is being added to central CI for consistent static-analysis coverage.
 
 ### Remaining audit findings
 

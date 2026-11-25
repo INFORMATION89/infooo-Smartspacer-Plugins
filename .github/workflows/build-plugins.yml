@@ -49,7 +49,7 @@ jobs:
           ./gradlew :ubereats:testDebugUnitTest :transitgo:testDebugUnitTest --stacktrace
 
       - name: Run Android lint
-        run: ./gradlew :ubereats:lintRelease :transitgo:lintRelease --stacktrace
+        run: ./gradlew :uber:lintRelease :ubereats:lintRelease :transitgo:lintRelease --stacktrace
 
       - name: Build all maintained plugins
         run: ./gradlew :uber:assembleDebug :ubereats:assembleRelease :transitgo:assembleRelease --stacktrace

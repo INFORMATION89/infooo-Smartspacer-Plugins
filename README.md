@@ -9,8 +9,8 @@ This repository keeps the original Uber ride-tracking plugin and adds separate p
 | Plugin | Gradle module | Package / application ID | Version | Status |
 |---|---|---|---|---|
 | Uber (rides) | `:uber` | `com.kieronquinn.app.smartspacer.plugin.uber` | 1.1.0 | Existing plugin based on the upstream Smartspacer plugin |
-| Uber Eats (food orders) | `:ubereats` | `dev.marco.smartspacer.ubereats` | 0.1.1 (alpha) | Migrated from the standalone repository; real-order validation still required |
-| Transit GO | `:transitgo` | `dev.marco.smartspacer.transitgo` | 1.3.1 | Migrated from the standalone repository; device validation still required |
+| [Uber Eats (food orders)](plugins/ubereats/README.md) | `:ubereats` | `dev.marco.smartspacer.ubereats` | 0.1.1 (alpha) | Migrated from the standalone repository; real-order validation still required |
+| [Transit GO](plugins/transitgo/README.md) | `:transitgo` | `dev.marco.smartspacer.transitgo` | 1.3.1 | Migrated from the standalone repository; device validation still required |
 
 **Uber and Uber Eats are different plugins.** `:uber` tracks rides and drivers. `:ubereats` tracks food orders from Uber Eats or the food-order section of the Uber app. They must remain separate Android applications.
 
@@ -49,6 +49,14 @@ Requirements: JDK 21 and Android SDK platform 37. Run commands from the reposito
 
 # All maintained applications
 ./gradlew :uber:assembleDebug :ubereats:assembleRelease :transitgo:assembleRelease
+```
+
+On Windows PowerShell, use the Gradle wrapper batch file:
+
+```powershell
+.\gradlew.bat :uber:assembleDebug
+.\gradlew.bat :ubereats:testDebugUnitTest :ubereats:lintRelease :ubereats:assembleRelease
+.\gradlew.bat :transitgo:testDebugUnitTest :transitgo:lintRelease :transitgo:assembleRelease
 ```
 
 APK output locations:

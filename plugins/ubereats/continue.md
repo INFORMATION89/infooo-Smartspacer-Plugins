@@ -10,7 +10,7 @@ This file is the handoff for the next coding session. Follow [rules.md](rules.md
 - Imported source: `INFORMATION89/UberEats-Smartspacer` at `3d1e6fea2e86945e9276086a2310e0565112b9c0`
 - Application version: `0.1.1` (`versionCode = 101`); retain the alpha status until a real order has been tested.
 - Uber Eats debug diagnostics were sanitized during migration: raw extra values and full notification keys are no longer logged; parser failures log only the exception type; removal events are filtered to supported Uber packages.
-- The new root Gradle and CI wiring has been added but must pass in this monorepo before the migration is considered complete.
+- Monorepo Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) passed `:ubereats:testDebugUnitTest`, `:ubereats:lintRelease`, `:ubereats:assembleRelease`, and the `uber-eats-plugin` artifact upload.
 - The standalone audit found no test source set. Parser/state regression tests are still required.
 
 ## How to resume
@@ -22,7 +22,7 @@ This file is the handoff for the next coding session. Follow [rules.md](rules.md
 
 ## Implementation order
 
-### Phase 1 — Remove sensitive debug output <sub>Implemented during migration; verify after monorepo build.</sub>
+### Phase 1 — Remove sensitive debug output <sub>Implemented; device Logcat check remains</sub>
 
 - `OrderReader.logNotification()` now logs only package, flags, category, channel, presence of title/body fields, and extra key/type names.
 - Raw notification extra values and the full notification key are no longer logged.
@@ -76,9 +76,9 @@ Continue using Material 3 for ordinary controls and surfaces. Preserve dynamic c
 
 ### Phase 5 — Improve automated verification
 
-- Add unit tests for newly isolated logic.
-- Add `testDebugUnitTest` and `lintRelease` to the Build workflow.
-- Keep `assembleRelease` as the APK build step.
+- Add a testable parser boundary and sanitized unit tests for food-vs-ride classification, candidate scoring, ETA-only updates, removal, and listener reconnection.
+- The monorepo workflow already runs `:ubereats:testDebugUnitTest`, `:ubereats:lintRelease`, and `:ubereats:assembleRelease`.
+- Keep the APK build step scoped to this module.
 - Run the three commands locally and in CI:
   - `./gradlew :ubereats:testDebugUnitTest`
   - `./gradlew :ubereats:lintRelease`

@@ -8,7 +8,6 @@ Read [AGENTS.md](AGENTS.md), [rules.md](rules.md), [plan.md](plan.md), and [CLAU
 - PR: [#2 — Move Uber Eats and Transit GO into the Smartspacer plugin monorepo](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/pull/2)
 - Working branch: `migration/add-ubereats-transitgo-monorepo`
 - Base: `main`
-- PR head at last audit: `00a36b86127c9d0c9f0345971c46e979289d7616`
 - The PR is open, mergeable, and Draft. Do not merge or mark ready without explicit approval.
 - Original standalone repositories remain intact. Do not archive or delete them.
 
@@ -34,27 +33,24 @@ Read [AGENTS.md](AGENTS.md), [rules.md](rules.md), [plan.md](plan.md), and [CLAU
 
 ## CI validation
 
-PR workflow run: [Build plugin suite #6](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716970751)
+Verified monorepo workflow: [Build plugin suite #3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251).
 
-Last observed state:
-- `:ubereats:testDebugUnitTest` and `:transitgo:testDebugUnitTest`: passed.
-- `:ubereats:lintRelease` and `:transitgo:lintRelease`: passed.
-- Build step for `:uber:assembleDebug`, `:ubereats:assembleRelease`, and `:transitgo:assembleRelease`: in progress at last check.
-- Artifact uploads and final workflow conclusion: not yet confirmed.
+- Unit tests for `:ubereats` and `:transitgo`: passed.
+- Android Lint for `:ubereats` and `:transitgo`: passed.
+- Build step for `:uber:assembleDebug`, `:ubereats:assembleRelease`, and `:transitgo:assembleRelease`: passed.
+- All three artifact uploads passed: `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
+- Workflow conclusion: `success`.
 
-Do not describe the monorepo CI as fully green until the build step, all three artifact uploads, and the workflow conclusion succeed.
+The run validated all three app builds and the root Gradle layout. Later commits mainly adjusted registry metadata, release workflow behavior, and documentation. A final follow-up run is checking those changes. The original `:uber` module has no unit-test source set; `:uber:lintRelease` is being added to central CI for consistent lint coverage.
 
-## Next audit steps
+## Remaining audit work
 
-1. Confirm the current CI run reaches success and verify all three separate APK artifacts exist.
-2. Review the complete Gradle configuration and confirm the existing `:uber` build output path remains valid.
-3. Run/consider lint coverage for the original `:uber` module; current root CI runs lint only for `:ubereats` and `:transitgo`.
-4. Audit manifests, application IDs, namespaces, provider authorities, listener components, package visibility queries and permissions for all three apps.
-5. Audit notification parsing, lifecycle, stale-state handling, logging and in-memory data handling.
-6. Review release workflow signing and tag isolation without accessing or exposing signing secrets and without creating tags/releases.
-7. Verify README, plugin metadata, version labels, download URLs and source provenance.
-8. Keep the remaining technical debt visible: Uber Eats parser tests and settings modularization; Transit GO listener/RemoteViews edge-case tests; physical-device validation for both plugins.
-9. Update this file and [plan.md](plan.md) with exact run IDs, results and any fixes.
+1. Confirm the follow-up CI run, including `:uber:lintRelease`, succeeds.
+2. Add sanitized parser/state tests for Uber Eats: food orders from both Uber apps, ride/promotion rejection, ETA-only updates, candidate selection and stale-state cleanup.
+3. Extend Transit GO tests for listener disconnection/rebinding and RemoteViews parsing fallbacks.
+4. Consider tests for the original `:uber` module; no `src/test` or `src/androidTest` source set was imported for it.
+5. Complete physical-device checks for both imported plugins: real order/trip lifecycle, settings persistence, localization, and display densities.
+6. Review Uber Eats' in-memory candidate map and remembered notification keys for bounded growth and stale-candidate behavior.
 
 ## Device validation still required
 

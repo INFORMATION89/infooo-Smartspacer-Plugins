@@ -9,7 +9,7 @@ Working branch: `migration/add-ubereats-transitgo-monorepo`. Source: `INFORMATIO
 - **Integration/rendering code — implemented, device gate open:** `TransitNotificationContract.kt` centralizes package/channel and observed RemoteViews IDs. `ChipRenderer` uses display-resource width, caps output bitmaps at 512 px, synchronizes the ID cache, and avoids stack traces in logs. Validate the actual RemoteViews behavior on devices before closing this work.
 - **Settings architecture — extraction complete, visual gate open:** `SettingsActivity.kt`, `TransitGoSettingsScreen.kt`, `SettingsPreview.kt`, `SettingsComponents.kt`, `SettingsMotion.kt`, `SettingsTheme.kt`, and `TransitGoSettingsTokens.kt` have focused responsibilities. The existing single settings destination is preserved.
 - **Source CI — passed:** the standalone branch completed unit tests, Android Lint, and release APK assembly in Build run [#48](https://github.com/INFORMATION89/Transit-GO-Smartspacer/actions/runs/45710785597).
-- **Monorepo CI — pending:** repeat tests, lint, and APK assembly from the root project before considering the import complete.
+- **Monorepo CI — passed:** Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) completed successfully. Unit tests, Android Lint, release APK assembly, and the `transit-go-plugin` artifact upload passed.
 - Earlier intermediate compile failures in the source branch were corrected; they are historical and are not evidence of the new monorepo build status.
 
 ## Baseline

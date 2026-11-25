@@ -15,7 +15,7 @@ This file is the handoff for the next coding session. Follow [rules.md](rules.md
 - **Phases 3–4 — integration and rendering hardening:** code changes are implemented. The package/channel/RemoteViews assumptions are centralized, the fixed 1080 px width was replaced with a display-resource-based width, rendered bitmaps are capped at 512 px, and the ID cache is synchronized. Device-level behavior is not yet verified.
 - **Phase 6 — settings architecture:** extraction is complete. The Activity, Compose coordinator, preview, reusable components, motion/gesture behavior, theme/typography, and visual tokens now live in focused files; no second settings destination was added.
 - **Standalone verification:** unit tests, Android Lint, and release APK assembly passed in the source repository's Build workflow #48 after the refactor.
-- **Monorepo verification:** pending. The root build workflow must pass for `:transitgo` after the import.
+- **Monorepo verification:** passed in Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251): `:transitgo:testDebugUnitTest`, `:transitgo:lintRelease`, `:transitgo:assembleRelease`, and the `transit-go-plugin` artifact upload all succeeded.
 - **Still open:** extend parser/lifecycle coverage, verify localized bike wording only against real Transit strings, and perform device checks in Phase 8. Standalone CI success does not replace monorepo or device validation.
 
 ## How to resume
@@ -95,10 +95,10 @@ The extraction checklist is complete: Activity lifecycle, Compose screen coordin
 ### Phase 7 — Improve automated verification
 
 - Implemented: CI runs `testDebugUnitTest`, `lintRelease`, and `assembleRelease` for pull requests and pushes to `main`.
-- Verified: all three steps passed on PR head `e0700c89f97b46f2e7c5b9f933f79ab3096ef87d` in [workflow run #47](https://github.com/INFORMATION89/Transit-GO-Smartspacer/actions/runs/45709815742).
+- Verified in the monorepo: unit tests, Android Lint, release APK assembly, and the `transit-go-plugin` artifact upload passed in [Build plugin suite #3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251).
 - Add tests for listener lifecycle, parsing boundaries, and RemoteViews edge cases as those seams are introduced.
 
-**Gate:** all three CI steps pass on the latest PR head. Device-only behavior must remain explicitly listed as unverified until tested.
+**Gate:** the module's CI tasks pass in the root workflow. Device-only behavior must remain explicitly listed as unverified until tested.
 
 ### Phase 8 — Validate with Transit GO on a device
 
