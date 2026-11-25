@@ -6,10 +6,11 @@ Read [AGENTS.md](AGENTS.md), [rules.md](rules.md), [plan.md](plan.md), and [CLAU
 
 - Repository: `INFORMATION89/infooo-Smartspacer-Plugins`
 - PR: [#2 — Move Uber Eats and Transit GO into the Smartspacer plugin monorepo](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/pull/2)
-- Branch: `migration/add-ubereats-transitgo-monorepo`, base: `main`
-- PR #2 is open and currently a draft. The migration branch has been compared with the current `main`; recheck the comparison and current PR head before merge.
-- The user authorized marking the PR ready and merging it once it is up to date with `main`, the audit is satisfactory, and all required checks pass.
-- Preserve both original standalone repositories. Do not archive or delete them.
+- Merged on 2026-11-25 into `main`.
+- Merge commit: `51d0550b0d29bab3376cccee96949f730c76591e`.
+- CI suite #21 passed tests, lint, all three APK builds, and all three artifact uploads.
+- Preserve both original standalone repositories. Do not archive or delete them without explicit authorization.
+- Remaining migration follow-up: update the source repositories' remotes/workflows to point to their monorepo paths, then decide separately whether to close those repositories.
 
 ## Architecture
 
