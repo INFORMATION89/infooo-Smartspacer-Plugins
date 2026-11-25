@@ -45,4 +45,4 @@ jobs:
           body_path: .github/release-notes-ubereats.md
           files: uber-eats-smartspacer-${{ github.ref_name }}.apk
           fail_on_unmatched_files: true
-          prerelease: ${{ startsWith(github.ref_name, 'ubereats-v0.') || contains(github.ref_name, '-') }}
+          prerelease: ${{ startsWith(github.ref_name, 'ubereats-v0.') || contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-rc') }}
