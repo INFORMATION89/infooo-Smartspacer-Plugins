@@ -138,7 +138,7 @@ The root `continue.md` now reflects that Gradle module wiring and the initial CI
 
 ## Audit update — 2026-11-25
 
-- Rechecked PR #2: it is open, mergeable, and still a draft. The branch was exactly up to date with `main` at comparison time (12 commits ahead, 0 behind); recheck immediately before merging.
+- Before merge, PR #2 was open and mergeable. Its final pre-merge head was exactly up to date with `main` (21 commits ahead, 0 behind).
 - No PR comments, submitted reviews, or inline review threads were present at audit time.
 - Added `:uber:testDebugUnitTest` to the root test step so CI invokes tests for all three Android apps. Only `:ubereats` and `:transitgo` currently contain unit-test source sets; `:uber` has no tests to execute.
 - Added a synthetic Uber Eats classifier regression for mixed food and ride wording from the Uber app.
@@ -146,4 +146,12 @@ The root `continue.md` now reflects that Gradle module wiring and the initial CI
 - Static review confirmed distinct application IDs, provider authorities, notification listener components, and version metadata for all three apps; imported manifests contain only package-visibility queries and no Internet permission. No cross-plugin runtime dependency was found.
 - Uber Eats filters by supported source package before parsing and scopes removal callbacks; Transit GO filters by package and `go_mode` channel before parsing. Both clear in-memory state on listener disconnection. Diagnostics inspected do not log notification content or full notification keys.
 - Remaining device-only validation is documented above. Do not claim live notification behavior, private Transit RemoteViews compatibility, UI rendering, or settings persistence as validated by CI.
-- The current branch head includes CI and test changes; use the current PR Actions run for final evidence. Merge only after the latest run succeeds and the branch remains current with `main`. The user has already authorized the merge under those conditions.
+- Final pre-merge head `d9d6004196204eaeced42af759cf4a24485523ac` passed Build plugin suite #21. PR #2 was then merged as `51d0550b0d29bab3376cccee96949f730c76591e`.
+
+
+## Merge completion — 2026-11-25
+
+- PR #2 was merged into `main` with merge commit `51d0550b0d29bab3376cccee96949f730c76591e`.
+- Final pre-merge validation: [Build plugin suite #21](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45719944978) passed all three test tasks, Android Lint for all three apps, all three APK builds, and uploads for `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
+- No release tags or releases were created. The source repositories were not archived or deleted.
+- Remaining follow-up: update the source repositories' remotes/workflows to point to the monorepo locations and decide separately whether to close the original repositories. Physical-device and extended notification-adapter tests remain release-readiness follow-up; CI did not perform those checks.
