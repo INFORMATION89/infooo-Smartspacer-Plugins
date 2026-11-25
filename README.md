@@ -65,7 +65,7 @@ APK output locations:
 - Transit GO: `plugins/transitgo/app/build/outputs/apk/`
 - Uber rides: `apks/` (as configured by the existing module)
 
-GitHub Actions builds the modules on pull requests and relevant pushes. CI artifacts are test builds; they are not official releases and may use a debug signing key.
+GitHub Actions runs each module's unit-test task, release lint for all three apps, and independent APK builds on pull requests and relevant pushes. Only `:ubereats` and `:transitgo` currently have unit-test source sets; `:uber`'s test task is invoked but has no imported tests. CI uploads separate `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin` artifacts. These are test builds, not official releases, and may use a debug signing key.
 
 ## Installation and releases
 
