@@ -52,6 +52,17 @@ class UberFoodNotificationClassifierTest {
     }
 
     @Test
+    fun mixedFoodAndRideWordingIsRejectedFromUberAppFeed() {
+        assertFalse(
+            UberFoodNotificationClassifier.looksLikeFoodOrder(
+                channelId = "miscellaneous",
+                title = "Your food order is ready",
+                body = "Your driver is arriving for your ride"
+            )
+        )
+    }
+
+    @Test
     fun unrelatedTextWithoutFoodSignalsIsRejected() {
         assertFalse(
             UberFoodNotificationClassifier.looksLikeFoodOrder(
