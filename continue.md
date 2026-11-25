@@ -51,4 +51,4 @@ Final pre-merge validation is recorded in [Build plugin suite #21](https://githu
 - Preserve current application IDs, namespaces, signing identity, release secrets, and individual versions.
 - Do not push tags or publish releases.
 - Do not archive or delete the source repositories.
-- After the merge, the remaining migration follow-up is to update each source repository's remote to the monorepo's relevant path/workflow and then decide separately how to close those repositories.
+- The remaining migration follow-up is to update local clones to use the monorepo and its `plugins/ubereats/app` or `plugins/transitgo/app` path, update source repository READMEs/workflows to point to the monorepo, and decide separately how to close the originals.
