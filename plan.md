@@ -120,13 +120,13 @@ Only after behavioral parity and ownership are clear, consider sharing Compose U
 
 - PR workflow run [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) completed successfully. Unit tests, lint, the three plugin builds, and all three artifact uploads passed.
 - The artifacts were `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
-- The original `:uber` module has no imported unit-test source set. It was built as a debug APK; `:uber:lintRelease` is being added to central CI for consistent static-analysis coverage.
+- The original `:uber` module has no imported unit-test source set. It was built as a debug APK; `:uber:lintRelease` has been added to central CI and is being validated in Build suite #10.
 
 ### Remaining audit findings
 
 - Uber Eats still has a large, concentrated `SettingsActivity.kt`; refactor it in a separate behavior-preserving task after migration validation.
-- Uber Eats has no imported unit-test source set. Its notification scoring, Uber-food-vs-ride classification, ETA-only updates, candidate selection and listener lifecycle need synthetic tests.
-- Uber Eats' in-memory candidate map and remembered Uber food notification keys should be reviewed for bounded growth and stale-candidate behavior under repeated notification updates.
+- Uber Eats now has a small pure-Kotlin unit-test suite for bounded notification-key storage. Its notification scoring, Uber-food-vs-ride classification, ETA-only updates, candidate selection and listener lifecycle still need synthetic parser/state tests.
+- **Addressed in the migration branch:** Uber Eats candidates are capped at 16; remembered food-order keys are capped at 32; both expire after 12 hours. Tests cover remembered-key expiry, capacity, refresh, removal and clearing.
 - Transit GO relies on private Transit RemoteViews layouts and resource IDs. This remains inherently fragile and requires real-device validation after Transit app updates.
 - Both apps require real notification/device checks; successful CI does not validate live order/trip behavior, RemoteViews rendering, screen density, settings gestures, or preference persistence.
 - New `plugin.json` download URLs are intended for future monorepo releases. Do not treat the new plugins as published until their respective release tags and signed APK assets exist.

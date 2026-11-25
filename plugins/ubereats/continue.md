@@ -11,7 +11,7 @@ This file is the handoff for the next coding session. Follow [rules.md](rules.md
 - Application version: `0.1.1` (`versionCode = 101`); retain the alpha status until a real order has been tested.
 - Uber Eats debug diagnostics were sanitized during migration: raw extra values and full notification keys are no longer logged; parser failures log only the exception type; removal events are filtered to supported Uber packages.
 - Monorepo Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) passed `:ubereats:testDebugUnitTest`, `:ubereats:lintRelease`, `:ubereats:assembleRelease`, and the `uber-eats-plugin` artifact upload.
-- The standalone audit found no test source set. Parser/state regression tests are still required.
+- A pure-Kotlin `BoundedNotificationKeyStoreTest` suite now tests remembered-key expiry, capacity limits, refresh, removal and clearing. Full parser/scoring regression tests are still required; Build suite #10 is validating the added tests.
 
 ## How to resume
 
@@ -33,7 +33,9 @@ This file is the handoff for the next coding session. Follow [rules.md](rules.md
 
 ### Phase 2 — Add parser and state tests
 
-Add a testable parser boundary and sanitized fixtures covering:
+The remembered Uber food-order key store is bounded to 32 keys with a 12-hour TTL and has tests for expiry, capacity, refresh, and clearing. The candidate map is capped at 16 entries and drops entries older than 12 hours when a new notification event is processed.
+
+Still add a testable parser boundary and sanitized fixtures covering:
 
 - A live order from the Uber Eats app.
 - A food order placed through the Uber app.

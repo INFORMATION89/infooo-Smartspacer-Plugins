@@ -41,16 +41,16 @@ Verified monorepo workflow: [Build plugin suite #3](https://github.com/INFORMATI
 - All three artifact uploads passed: `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
 - Workflow conclusion: `success`.
 
-The run validated all three app builds and the root Gradle layout. Later commits mainly adjusted registry metadata, release workflow behavior, and documentation. A final follow-up run is checking those changes. The original `:uber` module has no unit-test source set; `:uber:lintRelease` is being added to central CI for consistent lint coverage.
+Build suite #3 validated all three app builds and the root Gradle layout. Build suite #6 also completed successfully after registry and release-workflow fixes. The latest run, [Build suite #10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032), is re-running the suite with `:uber:lintRelease` and the new bounded Uber Eats notification-state tests; its final result is pending. The original `:uber` module has no imported unit-test source set.
 
 ## Remaining audit work
 
 1. Confirm the follow-up CI run, including `:uber:lintRelease`, succeeds.
-2. Add sanitized parser/state tests for Uber Eats: food orders from both Uber apps, ride/promotion rejection, ETA-only updates, candidate selection and stale-state cleanup.
+2. Add full sanitized parser/state tests for Uber Eats: food orders from both Uber apps, ride/promotion rejection, ETA-only updates, and candidate selection. The new bounded-key store tests do not cover classification heuristics.
 3. Extend Transit GO tests for listener disconnection/rebinding and RemoteViews parsing fallbacks.
 4. Consider tests for the original `:uber` module; no `src/test` or `src/androidTest` source set was imported for it.
 5. Complete physical-device checks for both imported plugins: real order/trip lifecycle, settings persistence, localization, and display densities.
-6. Review Uber Eats' in-memory candidate map and remembered notification keys for bounded growth and stale-candidate behavior.
+6. Verify the Uber Eats memory limits: candidate map capped at 16; remembered food keys capped at 32; both expire after 12 hours. The key-store policy now has pure-Kotlin tests.
 
 ## Device validation still required
 

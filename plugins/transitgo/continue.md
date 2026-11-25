@@ -15,7 +15,7 @@ This file is the handoff for the next coding session. Follow [rules.md](rules.md
 - **Phases 3–4 — integration and rendering hardening:** code changes are implemented. The package/channel/RemoteViews assumptions are centralized, the fixed 1080 px width was replaced with a display-resource-based width, rendered bitmaps are capped at 512 px, and the ID cache is synchronized. Device-level behavior is not yet verified.
 - **Phase 6 — settings architecture:** extraction is complete. The Activity, Compose coordinator, preview, reusable components, motion/gesture behavior, theme/typography, and visual tokens now live in focused files; no second settings destination was added.
 - **Standalone verification:** unit tests, Android Lint, and release APK assembly passed in the source repository's Build workflow #48 after the refactor.
-- **Monorepo verification:** passed in Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251): `:transitgo:testDebugUnitTest`, `:transitgo:lintRelease`, `:transitgo:assembleRelease`, and the `transit-go-plugin` artifact upload all succeeded.
+- **Monorepo verification:** passed in Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251): `:transitgo:testDebugUnitTest`, `:transitgo:lintRelease`, `:transitgo:assembleRelease`, and the `transit-go-plugin` artifact upload all succeeded. Build suite #10 is rechecking the full pipeline after root lint and Uber Eats test changes.
 - **Still open:** extend parser/lifecycle coverage, verify localized bike wording only against real Transit strings, and perform device checks in Phase 8. Standalone CI success does not replace monorepo or device validation.
 
 ## How to resume

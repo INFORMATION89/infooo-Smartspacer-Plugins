@@ -14,7 +14,7 @@ The plugin has a sound basic shape: it is a native Kotlin Android app, uses Jetp
 
 The UI is not entirely hand-drawn. It uses Material 3 components, dynamic system colors on Android 12+, and Google Sans Text. The bespoke parts are concentrated in the animated preview, blur/header treatment, custom row/icon treatments, and the pull-to-open Source code interaction. Those are Compose implementations, not evidence that the whole screen should be replaced.
 
-The main maintenance risks are the oversized settings file, notification parsing based on external-app heuristics, and the lack of parser regression tests. Debug logging of notification contents was identified in the standalone audit and sanitized during migration. Monorepo Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) passed the available test, lint, release-build, and artifact-upload stages for this module.
+The main maintenance risks are the oversized settings file, notification parsing based on external-app heuristics, and the lack of parser regression tests. Debug logging of notification contents was identified in the standalone audit and sanitized during migration. Monorepo Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) passed this module's available test, lint, release-build, and artifact-upload stages. A bounded notification-key store and candidate cache have since been added; Build suite #10 is validating the new unit tests and extended lint.
 
 ## Findings
 
@@ -51,11 +51,11 @@ The settings screens in this repository and `INFORMATION89/Transit-GO-Smartspace
 
 **Repair:** extract and organize reusable UI components locally in this repository, and keep the equivalent structure understandable in the other repository. Do not introduce a shared remote dependency or a third repository as part of this cleanup. Any synchronized UI change must preserve each plugin's distinct settings and preview behavior.
 
-### P2 — No automated tests or static analysis are wired into CI
+### P2 — Parser tests remain incomplete
 
-The audited tree contains no `src/test` or `src/androidTest` source set. The Build workflow runs `assembleRelease`; it does not run unit tests or Android lint.
+The standalone audit found no `src/test` or `src/androidTest` source set. The monorepo now has four unit tests for the bounded remembered-key store and root CI runs tests and lint for this module. The parser heuristics themselves are not yet covered.
 
-**Repair:** add unit tests for the notification parser, candidate scoring, Uber-food filtering, state comparison, and notification lifecycle. Use sanitized notification fixtures and avoid storing real personal data in the repository. Add test and lint tasks to the Build workflow while retaining the release APK build. Do not claim parser compatibility based only on a successful compilation.
+**Remaining work:** add sanitized tests for notification parsing, candidate scoring, Uber-food filtering, state comparison, ETA-only updates, and notification lifecycle. Never use real order notifications or personal data as fixtures.
 
 ### P2 — Installation instructions recommend disabling Play Protect
 
