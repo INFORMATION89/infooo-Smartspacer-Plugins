@@ -120,7 +120,7 @@ Only after behavioral parity and ownership are clear, consider sharing Compose U
 
 - PR workflow run [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) completed successfully. Unit tests, lint, the three plugin builds, and all three artifact uploads passed.
 - The artifacts were `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
-- The original `:uber` module has no imported unit-test source set. The current workflow invokes its test task (which therefore has no plugin-owned tests to execute), runs release lint for all three apps, and builds all three APKs. Always inspect the latest PR run for the current head.
+- The original `:uber` module has no imported unit-test source set. The final pre-merge workflow invoked its test task, ran release lint for all three apps, built all three APKs, and uploaded each artifact. Build plugin suite #21 passed; see the merge-completion record below.
 
 ### Remaining audit findings
 
