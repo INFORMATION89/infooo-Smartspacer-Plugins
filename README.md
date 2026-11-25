@@ -79,7 +79,7 @@ Install only APKs from the relevant GitHub release. Do not disable Play Protect 
 - Never dismiss, modify, or cancel source-app notifications.
 - Notification layouts, extras, package names, and channel identifiers owned by third-party apps are integration assumptions, not stable APIs.
 
-See [rules.md](rules.md), [plan.md](plan.md), and [continue.md](continue.md) before contributing.
+See [rules.md](rules.md), [plan.md](plan.md), and [continue.md](continue.md) before contributing. The source revisions and move details are recorded in [docs/MIGRATION.md](docs/MIGRATION.md).
 
 ## Licenses and attribution
 
