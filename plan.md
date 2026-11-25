@@ -47,9 +47,9 @@ Consolidate the maintained Smartspacer plugins into one Gradle repository withou
 
 The root Gradle build now includes the existing `:uber` module plus independent `:ubereats` and `:transitgo` applications under `plugins/`. The root Kotlin Compose compiler plugin is registered centrally. The root workflow runs available tests and lint, builds all three applications, and uploads a separate artifact for each.
 
-Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) completed successfully: tests, lint, all three APK builds, and all three artifact uploads passed. It produced `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
+Build plugin suite [#10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032) completed successfully: unit tests, lint for all three apps, all APK builds, and all three artifact uploads passed. It produced `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
 
-The source repositories' wrappers and root Gradle files were not copied. The monorepo owns the root wrapper and settings. Follow-up workflow runs check later metadata and release-workflow changes. Central CI is being extended with `:uber:lintRelease`; the original `:uber` module has no imported unit-test source set.
+The source repositories' wrappers and root Gradle files were not copied. The monorepo owns the root wrapper and settings. The newest code revision adds pure-Kotlin Uber Eats classification/scoring tests; Build suite #12 attempt 2 has passed tests and is still running lint/build. The original `:uber` module has no imported unit-test source set.
 
 ### P1 — Uber Eats notification diagnostics
 
@@ -125,7 +125,7 @@ Only after behavioral parity and ownership are clear, consider sharing Compose U
 ### Remaining audit findings
 
 - Uber Eats still has a large, concentrated `SettingsActivity.kt`; refactor it in a separate behavior-preserving task after migration validation.
-- Uber Eats now has a small pure-Kotlin unit-test suite for bounded notification-key storage. Its notification scoring, Uber-food-vs-ride classification, ETA-only updates, candidate selection and listener lifecycle still need synthetic parser/state tests.
+- Uber Eats now has pure-Kotlin tests for bounded notification-key storage, food-channel/text classification, English/Spanish wording, ride rejection, and current score weights. Android notification event integration (ETA-only updates, candidate selection, removals/reconnection) still needs synthetic adapter/state tests.
 - **Addressed in the migration branch:** Uber Eats candidates are capped at 16; remembered food-order keys are capped at 32; both expire after 12 hours. Tests cover remembered-key expiry, capacity, refresh, removal and clearing.
 - Transit GO relies on private Transit RemoteViews layouts and resource IDs. This remains inherently fragile and requires real-device validation after Transit app updates.
 - Both apps require real notification/device checks; successful CI does not validate live order/trip behavior, RemoteViews rendering, screen density, settings gestures, or preference persistence.

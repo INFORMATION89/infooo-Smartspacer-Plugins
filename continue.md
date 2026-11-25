@@ -33,24 +33,24 @@ Read [AGENTS.md](AGENTS.md), [rules.md](rules.md), [plan.md](plan.md), and [CLAU
 
 ## CI validation
 
-Verified monorepo workflow: [Build plugin suite #3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251).
+Verified monorepo workflow: [Build plugin suite #10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032).
 
-- Unit tests for `:ubereats` and `:transitgo`: passed.
-- Android Lint for `:ubereats` and `:transitgo`: passed.
-- Build step for `:uber:assembleDebug`, `:ubereats:assembleRelease`, and `:transitgo:assembleRelease`: passed.
+- Unit tests for `:ubereats` (bounded notification state) and `:transitgo`: passed.
+- Android Lint for all three plugins (`:uber`, `:ubereats`, `:transitgo`): passed.
+- All three APK build tasks passed.
 - All three artifact uploads passed: `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
 - Workflow conclusion: `success`.
 
-Build suite #3 validated all three app builds and the root Gradle layout. Build suite #6 also completed successfully after registry and release-workflow fixes. The latest run, [Build suite #10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032), is re-running the suite with `:uber:lintRelease` and the new bounded Uber Eats notification-state tests; its final result is pending. The original `:uber` module has no imported unit-test source set.
+The latest code revision adds pure-Kotlin Uber Eats classification and scoring tests. Build suite #12 attempt 2 has passed its unit-test step; lint is running and the APK build/artifact steps remain pending. Attempt 1 failed before tests started because the Kotlin plugin marker could not be resolved; the retry passed tests. The original `:uber` module has no imported unit-test source set.
 
 ## Remaining audit work
 
 1. Confirm the follow-up CI run, including `:uber:lintRelease`, succeeds.
-2. Add full sanitized parser/state tests for Uber Eats: food orders from both Uber apps, ride/promotion rejection, ETA-only updates, and candidate selection. The new bounded-key store tests do not cover classification heuristics.
+2. Extend Uber Eats integration tests beyond the new pure classifier/scoring tests: Android notification package/channel filtering, ETA-only notification updates, candidate selection, removal/reconnection, and stale-state cleanup.
 3. Extend Transit GO tests for listener disconnection/rebinding and RemoteViews parsing fallbacks.
 4. Consider tests for the original `:uber` module; no `src/test` or `src/androidTest` source set was imported for it.
 5. Complete physical-device checks for both imported plugins: real order/trip lifecycle, settings persistence, localization, and display densities.
-6. Verify the Uber Eats memory limits: candidate map capped at 16; remembered food keys capped at 32; both expire after 12 hours. The key-store policy now has pure-Kotlin tests.
+6. The Uber Eats memory limits are implemented and pure-Kotlin key-store tests cover expiry, capacity, refresh, removal and clearing. Keep these bounds in place when modifying the listener.
 
 ## Device validation still required
 

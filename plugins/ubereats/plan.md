@@ -14,7 +14,7 @@ The plugin has a sound basic shape: it is a native Kotlin Android app, uses Jetp
 
 The UI is not entirely hand-drawn. It uses Material 3 components, dynamic system colors on Android 12+, and Google Sans Text. The bespoke parts are concentrated in the animated preview, blur/header treatment, custom row/icon treatments, and the pull-to-open Source code interaction. Those are Compose implementations, not evidence that the whole screen should be replaced.
 
-The main maintenance risks are the oversized settings file, notification parsing based on external-app heuristics, and the lack of parser regression tests. Debug logging of notification contents was identified in the standalone audit and sanitized during migration. Monorepo Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) passed this module's available test, lint, release-build, and artifact-upload stages. A bounded notification-key store and candidate cache have since been added; Build suite #10 is validating the new unit tests and extended lint.
+The main maintenance risks are the oversized settings file and Android notification event handling. Debug logging of notification contents was identified in the standalone audit and sanitized during migration. Pure-Kotlin tests now cover bounded remembered keys, food-channel/text classification, English/Spanish terms, ride rejection, and current score weights. Build plugin suite [#10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032) passed this module's unit tests, lint, release build, and artifact upload. Build suite #12 attempt 2 is validating the newest classifier/scoring tests plus the full pipeline.
 
 ## Findings
 
@@ -53,9 +53,9 @@ The settings screens in this repository and `INFORMATION89/Transit-GO-Smartspace
 
 ### P2 — Parser tests remain incomplete
 
-The standalone audit found no `src/test` or `src/androidTest` source set. The monorepo now has four unit tests for the bounded remembered-key store and root CI runs tests and lint for this module. The parser heuristics themselves are not yet covered.
+The standalone audit found no `src/test` or `src/androidTest` source set. The monorepo now has pure-Kotlin tests for the bounded remembered-key store and for food-channel/text classification plus notification-score weights. Root CI runs unit tests and lint for this module.
 
-**Remaining work:** add sanitized tests for notification parsing, candidate scoring, Uber-food filtering, state comparison, ETA-only updates, and notification lifecycle. Never use real order notifications or personal data as fixtures.
+**Remaining work:** add Android notification adapter/state tests for package/channel filtering, ETA-only updates, candidate selection, state comparison, removal/reconnection, and stale-candidate cleanup. Never use real order notifications or personal data as fixtures.
 
 ### P2 — Installation instructions recommend disabling Play Protect
 

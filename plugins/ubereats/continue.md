@@ -10,8 +10,8 @@ This file is the handoff for the next coding session. Follow [rules.md](rules.md
 - Imported source: `INFORMATION89/UberEats-Smartspacer` at `3d1e6fea2e86945e9276086a2310e0565112b9c0`
 - Application version: `0.1.1` (`versionCode = 101`); retain the alpha status until a real order has been tested.
 - Uber Eats debug diagnostics were sanitized during migration: raw extra values and full notification keys are no longer logged; parser failures log only the exception type; removal events are filtered to supported Uber packages.
-- Monorepo Build plugin suite [#3](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716316251) passed `:ubereats:testDebugUnitTest`, `:ubereats:lintRelease`, `:ubereats:assembleRelease`, and the `uber-eats-plugin` artifact upload.
-- A pure-Kotlin `BoundedNotificationKeyStoreTest` suite now tests remembered-key expiry, capacity limits, refresh, removal and clearing. Full parser/scoring regression tests are still required; Build suite #10 is validating the added tests.
+- Monorepo Build plugin suite [#10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032) passed `:ubereats:testDebugUnitTest`, `:ubereats:lintRelease`, `:ubereats:assembleRelease`, and the `uber-eats-plugin` artifact upload.
+- Pure-Kotlin tests now cover bounded key storage, food channel/text classification, English/Spanish wording, ride rejection, and current score weights. Build suite #12 attempt 2 passed the newest unit-test step; lint and APK assembly are still running.
 
 ## How to resume
 
@@ -33,9 +33,9 @@ This file is the handoff for the next coding session. Follow [rules.md](rules.md
 
 ### Phase 2 — Add parser and state tests
 
-The remembered Uber food-order key store is bounded to 32 keys with a 12-hour TTL and has tests for expiry, capacity, refresh, and clearing. The candidate map is capped at 16 entries and drops entries older than 12 hours when a new notification event is processed.
+The remembered Uber food-order key store is bounded to 32 keys with a 12-hour TTL and has tests for expiry, capacity, refresh, and clearing. The candidate map is capped at 16 entries and drops entries older than 12 hours when a new notification event is processed. The pure classifier/scoring boundary is also extracted and tested for food channels, English/Spanish food wording, ride rejection, and current score weights.
 
-Still add a testable parser boundary and sanitized fixtures covering:
+Still add Android notification-adapter/state tests and sanitized fixtures covering:
 
 - A live order from the Uber Eats app.
 - A food order placed through the Uber app.
@@ -58,7 +58,7 @@ Prefer pure Kotlin tests for scoring, filtering, parsing decisions, and state co
 - Handle missing or malformed extras without crashing or leaving stale order state.
 - Do not add network access or attempt to reverse-engineer private APIs beyond the notification information already available.
 
-**Gate:** parser tests pass and the behavior for Uber rides, promotions, and food orders remains distinct.
+**Gate:** pure classifier/scoring tests pass, and Android notification integration tests confirm ride, promotion, and food-order notifications remain distinct.
 
 ### Phase 4 — Split and simplify the settings UI
 
