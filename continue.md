@@ -6,61 +6,48 @@ Read [AGENTS.md](AGENTS.md), [rules.md](rules.md), [plan.md](plan.md), and [CLAU
 
 - Repository: `INFORMATION89/infooo-Smartspacer-Plugins`
 - PR: [#2 — Move Uber Eats and Transit GO into the Smartspacer plugin monorepo](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/pull/2)
-- Working branch: `migration/add-ubereats-transitgo-monorepo`
-- Base: `main`
-- The PR is open, mergeable, and Draft. Do not merge or mark ready without explicit approval.
-- Original standalone repositories remain intact. Do not archive or delete them.
+- Branch: `migration/add-ubereats-transitgo-monorepo`, base: `main`
+- PR #2 is open and currently a draft. The migration branch has been compared with the current `main`; recheck the comparison and current PR head before merge.
+- The user authorized marking the PR ready and merging it once it is up to date with `main`, the audit is satisfactory, and all required checks pass.
+- Preserve both original standalone repositories. Do not archive or delete them.
 
 ## Architecture
 
-- `:uber` is the existing Uber ride-tracking plugin. Preserve it.
-- `:ubereats` is the separate food-order plugin at `plugins/ubereats/app`.
-- `:transitgo` is the separate Transit GO plugin at `plugins/transitgo/app`.
+- `:uber` remains the Uber rides plugin.
+- `:ubereats` is the separate food-order app at `plugins/ubereats/app`.
+- `:transitgo` is the separate Transit GO app at `plugins/transitgo/app`.
 - `:shared` and `:systemstubs` remain part of the existing Uber rides implementation.
-- Root `settings.gradle` already includes all five Gradle projects and maps the two new app modules to their nested directories.
-- Each app keeps its own application ID, namespace, provider authority, notification listener, preferences, resources, version and release workflow.
-- No runtime dependency between the three applications has been introduced.
+- The root Gradle settings include all five projects. The imported applications keep separate IDs, namespaces, provider authorities, notification listeners, preferences, resources, versions, and release workflows. There are no runtime dependencies between the three plugins.
 
-## Work completed in the migration branch
+## Migration and audit work
 
-- Imported current Transit GO from `INFORMATION89/Transit-GO-Smartspacer`, branch `fix/privacy-safe-diagnostics`, including its privacy changes, tests and extracted settings UI.
-- Imported Uber Eats from `INFORMATION89/UberEats-Smartspacer`, branch `main`.
-- Sanitized Uber Eats debug diagnostics: raw extras values and full notification keys are not logged; parser failures log only the exception type; notification removal filters to supported source packages.
-- Centralized root Gradle plugin versions and registered the Kotlin Compose compiler plugin.
-- Added a root CI workflow for unit tests, Android Lint and independent APK builds.
-- Added separate Uber Eats and Transit GO tag-triggered release workflows. The existing Uber rides release workflow remains separate.
-- Added root and plugin-specific READMEs, AI instructions, rules, plans, handoffs, plugin metadata and migration provenance.
+- Imported Transit GO from `INFORMATION89/Transit-GO-Smartspacer`, branch `fix/privacy-safe-diagnostics`, and Uber Eats from `INFORMATION89/UberEats-Smartspacer`, branch `main`.
+- Centralized Gradle configuration and added root CI for tests, lint, three independent app builds, and three separate APK artifacts.
+- CI invokes the unit-test task for all three apps. Uber Eats and Transit GO have unit tests; the existing Uber rides module has no imported test source set.
+- Added an explicit synthetic regression case that rejects mixed food-and-ride wording from Uber's shared notification feed.
+- Reviewed manifests, IDs, authorities, dependency boundaries, notification filtering/removal/disconnection, diagnostics, release tag scoping, APK output paths, and migration provenance.
+- No release tags or releases have been created. The imported code is not device-validated: real order/trip notifications, Transit private RemoteViews, rendering, settings persistence, localization, and screen densities still need physical-device checks.
 
-## CI validation
+## Validation
 
-Verified monorepo workflow: [Build plugin suite #10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032).
+The root workflow runs:
 
-- Unit tests for `:ubereats` (bounded notification state) and `:transitgo`: passed.
-- Android Lint for all three plugins (`:uber`, `:ubereats`, `:transitgo`): passed.
-- All three APK build tasks passed.
-- All three artifact uploads passed: `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
-- Workflow conclusion: `success`.
+- `:uber:testDebugUnitTest`, `:ubereats:testDebugUnitTest`, and `:transitgo:testDebugUnitTest`.
+- Release lint for all three modules.
+- `:uber:assembleDebug`, `:ubereats:assembleRelease`, and `:transitgo:assembleRelease`.
+- A distinct artifact upload for each app.
 
-The latest code revision adds pure-Kotlin Uber Eats classification and scoring tests. Build suite #12 attempt 2 has passed its unit-test step; lint is running and the APK build/artifact steps remain pending. Attempt 1 failed before tests started because the Kotlin plugin marker could not be resolved; the retry passed tests. The original `:uber` module has no imported unit-test source set.
+Check the latest PR Actions run for the current head before merge. Earlier suite #3 passed the tests then present, lint, all three builds, and all three artifact uploads; it predates the expanded test task and the latest audit updates. A CI pass does not replace the device checks listed above.
 
-## Remaining audit work
+## Remaining device checks
 
-1. Confirm the follow-up CI run, including `:uber:lintRelease`, succeeds.
-2. Extend Uber Eats integration tests beyond the new pure classifier/scoring tests: Android notification package/channel filtering, ETA-only notification updates, candidate selection, removal/reconnection, and stale-state cleanup.
-3. Extend Transit GO tests for listener disconnection/rebinding and RemoteViews parsing fallbacks.
-4. Consider tests for the original `:uber` module; no `src/test` or `src/androidTest` source set was imported for it.
-5. Complete physical-device checks for both imported plugins: real order/trip lifecycle, settings persistence, localization, and display densities.
-6. The Uber Eats memory limits are implemented and pure-Kotlin key-store tests cover expiry, capacity, refresh, removal and clearing. Keep these bounds in place when modifying the listener.
+- Uber Eats: live food orders from both Uber apps, ETA-only updates, ride/promotion rejection, removal/reconnection, courier photo behavior, and settings persistence.
+- Transit GO: active trip updates, route-chip/step-icon variants, trip completion, listener disconnection, and settings appearance/interactions.
+- Both apps: localization, long text, and display-density/layout checks on physical devices.
 
-## Device validation still required
+## Release and source-repository boundaries
 
-- Uber Eats: real food-order notifications from both Uber Eats and the Uber app; ETA-only updates; ride/promotion rejection; notification removal/reconnection; courier photo behavior; settings persistence.
-- Transit GO: active GO trip updates; route chip and step-icon variants; trip completion; listener disconnection; settings appearance/interactions.
-- Both: verify layout and localization on physical devices, including long text and different screen densities.
-
-## Safety boundaries
-
-- Do not change app versions, application IDs, namespaces, signing identity, release secrets or release assets.
+- Preserve current application IDs, namespaces, signing identity, release secrets, and individual versions.
 - Do not push tags or publish releases.
-- Do not merge PR #2 or delete/archive the source repositories without explicit approval.
-- Treat CI as automated validation only; it does not replace real-device testing.
+- Do not archive or delete the source repositories.
+- After the merge, the remaining migration follow-up is to update each source repository's remote to the monorepo's relevant path/workflow and then decide separately how to close those repositories.
