@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      android-toolchain:
+        patterns:
+          - "com.android.*"
+          - "org.jetbrains.kotlin*"
+          - "com.google.devtools.ksp"
+      compose-and-androidx:
+        patterns:
+          - "androidx.*"
+          - "org.jetbrains.compose.*"
+      plugin-dependencies:
+        patterns:
+          - "com.kieronquinn.smartspacer:*"
+          - "dev.chrisbanes.haze:*"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

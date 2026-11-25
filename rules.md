@@ -12,11 +12,15 @@ These rules apply to human and AI-assisted changes across the Smartspacer plugin
 
 ## Gradle and build ownership
 
-- The root wrapper, plugin repositories, and plugin versions are authoritative.
+- The root wrapper and plugin repositories are authoritative. Shared imported-app plugin/dependency versions live in `gradle/libs.versions.toml`.
+- Use the version-catalog aliases in Kotlin DSL modules. Let the Compose BOM select BOM-managed versions; do not pin a second version beside it.
+- Preserve the legacy `:uber` dependency setup in the root build until it is migrated deliberately; do not create a second version source while doing unrelated work.
 - Do not copy standalone `settings.gradle`, root `build.gradle`, `gradle.properties`, wrappers, or workflows into a plugin directory.
 - Each new application module lives in `plugins/<id>/app`; include it from root `settings.gradle`.
 - Keep application-specific configuration and dependencies in that module's `build.gradle.kts`.
 - Avoid broad toolchain/dependency upgrades during feature work.
+- Keep per-plugin release workflows as thin tag/configuration entry points into `.github/workflows/_release-android-plugin.yml`.
+- A release tag must exactly match that module's `versionName`; release validation runs the module's tests and lint before signing/building.
 - Keep release tasks and tag filters scoped to the intended plugin. A plugin release must never build or upload another plugin's APK.
 
 ## Notification integration and privacy
@@ -50,6 +54,7 @@ These rules apply to human and AI-assisted changes across the Smartspacer plugin
 - CI invokes the unit-test task for `:uber`, `:ubereats`, and `:transitgo`, runs release lint for all three, and builds each maintained APK independently. The current `:uber` module has no imported unit-test source set; its task is still invoked to validate Gradle task configuration. Uber Eats and Transit GO have separate unit tests.
 - Do not commit real notifications, names, routes, addresses, orders, courier/driver data, or images as fixtures.
 - Report device-only checks separately from automated checks.
+- Keep `main` protected by a pull-request rule and the successful Build plugin suite check; see `.github/BRANCH_PROTECTION.md`.
 
 ## Releases
 

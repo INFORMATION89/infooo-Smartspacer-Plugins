@@ -116,7 +116,7 @@ import androidx.compose.runtime.setValue
 internal class TransitGoSettingsScreen(private val activity: SettingsActivity) {
 
     private companion object {
-        const val SOURCE_URL = "https://github.com/INFORMATION89/Transit-GO-Smartspacer"
+        const val SOURCE_URL = "https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/tree/main/plugins/transitgo"
     }
     private var settingsVersion by mutableIntStateOf(0)
 

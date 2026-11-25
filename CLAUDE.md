@@ -15,9 +15,15 @@ This repository contains three independently released Smartspacer applications:
 - Never synchronize version numbers between plugins just because they share a repository.
 - Update that plugin's `plugin.json` when a release is explicitly approved.
 
+## Shared release workflow
+
+Each per-plugin tag workflow calls `.github/workflows/_release-android-plugin.yml`. Keep the three entry points limited to tag filters and plugin-specific inputs. The reusable workflow validates `tag == <plugin-prefix><versionName>`, runs that module's unit-test task and release lint before assembling the signed APK, and checks that exactly one APK is selected. Do not duplicate that logic in individual workflows.
+
+The legacy `:uber` module reads `keystore.properties`; the imported applications receive the same permanent signing material through environment variables. Preserve these two integration modes until the Gradle signing configuration itself is deliberately unified. Release asset naming and release-note paths remain plugin-specific.
+
 ## Signing
 
-- The maintained apps use the permanent Smartspacer plugin signing identity.
+- The maintained apps use the permanent Smartspacer plugin signing identity and alias `smartspacer-plugins`.
 - Release workflows read `SIGNING_KEYSTORE_BASE64` and `SIGNING_PASSWORD` from repository secrets and use alias `smartspacer-plugins`.
 - Never expose, download, print, or change signing secrets or keystores.
 - CI/test builds may use a debug key when no release signing environment is provided. They are not official releases.

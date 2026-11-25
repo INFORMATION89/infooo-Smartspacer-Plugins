@@ -1,6 +1,6 @@
 # Repository instructions for AI agents
 
-Read this file before making changes. Then read [rules.md](rules.md), [CLAUDE.md](CLAUDE.md), [plan.md](plan.md), and [continue.md](continue.md). For a plugin, also read its nearest `AGENTS.md`, `rules.md`, `plan.md`, and `continue.md`.
+Read this file before making changes. Then read [rules.md](rules.md), [CLAUDE.md](CLAUDE.md), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [plan.md](plan.md), and [continue.md](continue.md). For repository administration, also read [.github/BRANCH_PROTECTION.md](.github/BRANCH_PROTECTION.md). For a plugin, also read its nearest `AGENTS.md`, `rules.md`, `plan.md`, and `continue.md`.
 
 ## Project boundaries
 
@@ -12,7 +12,9 @@ Read this file before making changes. Then read [rules.md](rules.md), [CLAUDE.md
 
 ## Gradle and module layout
 
-- The root Gradle wrapper and root plugin versions are authoritative.
+- The root Gradle wrapper and [version catalog](gradle/libs.versions.toml) are authoritative for imported-app plugin/dependency versions.
+- Use version-catalog aliases in Kotlin DSL app modules; do not repeat dependency versions or override versions managed by the Compose BOM.
+- Root legacy dependency variables used by `:uber`, `:shared`, and `:systemstubs` remain centralized until separately migrated. Do not duplicate them in imported modules.
 - New plugin modules are included from `settings.gradle`; their Android application project directories are `plugins/<plugin>/app`.
 - Do not add nested Gradle wrappers, nested settings files, or independent root builds under `plugins/`.
 - Keep per-application values (namespace, applicationId, SDK levels, versionCode/versionName, signing config) in that plugin's app module.
@@ -36,5 +38,6 @@ Be explicit about checks that cannot be performed without a real device or a rea
 
 - Work on a focused branch; do not work directly on `main`.
 - Keep changes small enough to review, but fix root causes rather than layering workarounds.
+- Keep per-plugin release workflows as thin tag/configuration entry points. The reusable workflow owns tag/version verification, signing, tests, lint, APK selection, and publication.
 - Never bump versions, push tags, publish releases, change release signing identity, or alter GitHub release assets without explicit user approval.
 - Preserve source repositories and their history unless the user explicitly asks to archive or delete them.

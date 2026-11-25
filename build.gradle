@@ -3,28 +3,26 @@ import com.android.build.gradle.internal.dsl.SigningConfig
 buildscript {
     ext.nav_version = "2.9.8"
     ext.protobuf_version = '0.10.0'
-    ext.refine_version = '4.4.0'
-    ext.room_version = "2.8.4"
     ext.compile_sdk = 37
     ext.min_sdk = 29
     ext.target_sdk = 34
     dependencies {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         classpath "com.google.protobuf:protobuf-gradle-plugin:$protobuf_version"
-        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
+        classpath libs.secretsGradleClasspath
     }
 }
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id 'com.android.application' version '9.2.1' apply false
-    id 'com.android.library' version '9.2.1' apply false
-    id 'org.jetbrains.kotlin.android' version '2.4.0' apply false
-    id 'org.jetbrains.kotlin.plugin.compose' version '2.4.0' apply false
-    id 'com.google.devtools.ksp' version '2.3.7' apply false
-    id 'dev.rikka.tools.refine' version "$refine_version" apply false
-    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1' apply false
-    id 'com.android.built-in-kotlin' version '9.2.1' apply false
+    alias(libs.plugins.androidApplication) apply false
+    alias(libs.plugins.androidLibrary) apply false
+    alias(libs.plugins.kotlinAndroid) apply false
+    alias(libs.plugins.kotlinCompose) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.rikkaRefine) apply false
+    alias(libs.plugins.secretsGradle) apply false
+    alias(libs.plugins.androidBuiltInKotlin) apply false
 }
 
 def getKeystoreProperties() {

@@ -1,0 +1,42 @@
+[versions]
+androidGradlePlugin = "9.2.1"
+kotlin = "2.4.0"
+ksp = "2.3.7"
+rikkaRefine = "4.4.0"
+secretsGradle = "2.0.1"
+
+smartspacerSdk = "1.1.2"
+androidxCore = "1.13.1"
+composeBom = "2025.10.00"
+material3 = "1.5.0-rc01"
+haze = "1.7.3"
+activityCompose = "1.11.0"
+junit = "4.13.2"
+room = "2.8.4"
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+androidBuiltInKotlin = { id = "com.android.built-in-kotlin", version.ref = "androidGradlePlugin" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+rikkaRefine = { id = "dev.rikka.tools.refine", version.ref = "rikkaRefine" }
+secretsGradle = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradle" }
+
+[libraries]
+smartspacerSdkPlugin = { module = "com.kieronquinn.smartspacer:sdk-plugin", version.ref = "smartspacerSdk" }
+androidxCoreKtx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+composeMaterial3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+composeMaterialIconsExtended = { module = "androidx.compose.material:material-icons-extended" }
+haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
+activityCompose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+junit = { module = "junit:junit", version.ref = "junit" }
+secretsGradleClasspath = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradle" }
+rikkaRefineRuntime = { module = "dev.rikka.tools.refine:runtime", version.ref = "rikkaRefine" }
+rikkaRefineAnnotationProcessor = { module = "dev.rikka.tools.refine:annotation-processor", version.ref = "rikkaRefine" }
+rikkaRefineAnnotation = { module = "dev.rikka.tools.refine:annotation", version.ref = "rikkaRefine" }
+roomRuntime = { module = "androidx.room:room-runtime", version.ref = "room" }
+roomKtx = { module = "androidx.room:room-ktx", version.ref = "room" }
+roomCompiler = { module = "androidx.room:room-compiler", version.ref = "room" }

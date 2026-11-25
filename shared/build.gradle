@@ -50,10 +50,10 @@ dependencies {
     api "androidx.security:security-crypto:1.1.0"
 
     //Hidden APIs
-    api "dev.rikka.tools.refine:runtime:$refine_version"
+    api libs.rikkaRefineRuntime
 
     //Smartspacer SDK
-    api 'com.kieronquinn.smartspacer:sdk-plugin:1.1.2'
+    api libs.smartspacerSdkPlugin
 
     //Dependency Injection
     api "io.insert-koin:koin-android:4.2.1"
@@ -73,9 +73,9 @@ dependencies {
     api 'com.google.code.gson:gson:2.14.0'
 
     //Room for data storage
-    api "androidx.room:room-runtime:$room_version"
-    api "androidx.room:room-ktx:$room_version"
-    ksp "androidx.room:room-compiler:$room_version"
+    api libs.roomRuntime
+    api libs.roomKtx
+    ksp libs.roomCompiler
 
     compileOnly project(path: ':systemstubs')
 }

@@ -1,0 +1,188 @@
+name: Reusable Android plugin release
+
+on:
+  workflow_call:
+    inputs:
+      gradle_project:
+        description: Gradle project path, for example :ubereats
+        required: true
+        type: string
+      version_file:
+        description: Module build file containing versionName
+        required: true
+        type: string
+      tag_prefix:
+        description: Exact tag prefix before the module version, for example ubereats-v
+        required: true
+        type: string
+      apk_glob:
+        description: Glob matching the one APK produced by this module
+        required: true
+        type: string
+      asset_prefix:
+        description: APK asset filename prefix
+        required: true
+        type: string
+      asset_tag_mode:
+        description: version-only or full-tag; preserves each plugin's current asset naming
+        required: true
+        type: string
+      release_title:
+        description: Human-readable product name for the GitHub release
+        required: true
+        type: string
+      release_notes:
+        description: Repository-relative release notes path
+        required: true
+        type: string
+      signing_mode:
+        description: properties for the legacy Uber module, environment for imported modules
+        required: true
+        type: string
+      prerelease_policy:
+        description: none, zero-or-suffix, or suffix
+        required: true
+        type: string
+    secrets:
+      SIGNING_KEYSTORE_BASE64:
+        required: true
+      SIGNING_PASSWORD:
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Validate tag against the module version
+        id: metadata
+        env:
+          VERSION_FILE: ${{ inputs.version_file }}
+          TAG_PREFIX: ${{ inputs.tag_prefix }}
+          PRERELEASE_POLICY: ${{ inputs.prerelease_policy }}
+          ASSET_PREFIX: ${{ inputs.asset_prefix }}
+          ASSET_TAG_MODE: ${{ inputs.asset_tag_mode }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import pathlib
+          import re
+          import sys
+
+          version_file = pathlib.Path(os.environ["VERSION_FILE"])
+          source = version_file.read_text(encoding="utf-8")
+          match = re.search(r'^\s*versionName\s*(?:=\s*)?["\']([^"\']+)["\']', source, re.MULTILINE)
+          if not match:
+              sys.exit(f"::error::Could not read versionName from {version_file}")
+          version = match.group(1)
+          expected_tag = os.environ["TAG_PREFIX"] + version
+          actual_tag = os.environ["GITHUB_REF_NAME"]
+          if actual_tag != expected_tag:
+              sys.exit(f"::error::Tag {actual_tag} does not match {version_file} versionName; expected {expected_tag}")
+
+          policy = os.environ["PRERELEASE_POLICY"]
+          suffix_release = any(token in version for token in ("-alpha", "-beta", "-rc"))
+          prerelease = (
+              policy == "zero-or-suffix" and (version.startswith("0.") or suffix_release)
+          ) or (
+              policy == "suffix" and suffix_release
+          )
+          if policy not in {"none", "zero-or-suffix", "suffix"}:
+              sys.exit(f"::error::Unknown prerelease policy: {policy}")
+
+          tag_mode = os.environ["ASSET_TAG_MODE"]
+          if tag_mode == "full-tag":
+              asset_suffix = actual_tag
+          elif tag_mode == "version-only":
+              asset_suffix = version if version.startswith("v") else f"v{version}"
+          else:
+              sys.exit(f"::error::Unknown asset tag mode: {tag_mode}")
+
+          asset_name = f"{os.environ['ASSET_PREFIX']}-{asset_suffix}.apk"
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"version={version}\n")
+              output.write(f"asset_name={asset_name}\n")
+              output.write(f"prerelease={'true' if prerelease else 'false'}\n")
+          print(f"Validated {actual_tag} for version {version}; prerelease={prerelease}")
+          PY
+
+      - name: Set up the release signing key
+        env:
+          SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          SIGNING_MODE: ${{ inputs.signing_mode }}
+        run: |
+          if [ -z "$SIGNING_KEYSTORE_BASE64" ]; then
+            echo "::error::SIGNING_KEYSTORE_BASE64 secret is missing"
+            exit 1
+          fi
+          if [ -z "$SIGNING_PASSWORD" ]; then
+            echo "::error::SIGNING_PASSWORD secret is missing"
+            exit 1
+          fi
+
+          KEYSTORE="$RUNNER_TEMP/release.p12"
+          printf '%s' "$SIGNING_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE"
+          test -s "$KEYSTORE"
+
+          if [ "$SIGNING_MODE" = "properties" ]; then
+            {
+              echo "storeFile=$KEYSTORE"
+              echo "storePassword=$SIGNING_PASSWORD"
+              echo "keyAlias=smartspacer-plugins"
+              echo "keyPassword=$SIGNING_PASSWORD"
+            } > keystore.properties
+          elif [ "$SIGNING_MODE" = "environment" ]; then
+            {
+              echo "SIGNING_KEYSTORE=$KEYSTORE"
+              echo "SIGNING_PASSWORD=$SIGNING_PASSWORD"
+            } >> "$GITHUB_ENV"
+          else
+            echo "::error::Unknown signing mode: $SIGNING_MODE"
+            exit 1
+          fi
+
+      - name: Run tests, lint, and build the signed APK
+        env:
+          GRADLE_PROJECT: ${{ inputs.gradle_project }}
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          chmod +x gradlew
+          ./gradlew \
+            "$GRADLE_PROJECT:testDebugUnitTest" \
+            "$GRADLE_PROJECT:lintRelease" \
+            "$GRADLE_PROJECT:assembleRelease" \
+            --stacktrace
+
+      - name: Prepare release asset
+        env:
+          APK_GLOB: ${{ inputs.apk_glob }}
+          ASSET_NAME: ${{ steps.metadata.outputs.asset_name }}
+        run: |
+          shopt -s nullglob
+          matches=( $APK_GLOB )
+          if [ "${#matches[@]}" -ne 1 ]; then
+            echo "::error::Expected exactly one APK for '$APK_GLOB'; found ${#matches[@]}"
+            exit 1
+          fi
+          cp "${matches[0]}" "$ASSET_NAME"
+          test -s "$ASSET_NAME"
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ inputs.release_title }} ${{ github.ref_name }}
+          body_path: ${{ inputs.release_notes }}
+          files: ${{ steps.metadata.outputs.asset_name }}
+          fail_on_unmatched_files: true
+          prerelease: ${{ steps.metadata.outputs.prerelease }}

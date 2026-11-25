@@ -54,16 +54,16 @@ kotlin {
 }
 
 dependencies {
-    implementation("com.kieronquinn.smartspacer:sdk-plugin:1.1.2")
-    implementation("androidx.core:core-ktx:1.13.1")
+    implementation(libs.smartspacerSdkPlugin)
+    implementation(libs.androidxCoreKtx)
 
     // Settings screen: Compose + Material 3 Expressive
-    implementation(platform("androidx.compose:compose-bom:2025.10.00"))
-    implementation("androidx.compose.material3:material3:1.5.0-rc01")
-    implementation("androidx.compose.material:material-icons-extended")
+    implementation(platform(libs.composeBom))
+    implementation(libs.composeMaterial3)
+    implementation(libs.composeMaterialIconsExtended)
     // Blurred, translucent header over the list (backdrop blur on Android 12+, a tint before)
-    implementation("dev.chrisbanes.haze:haze:1.7.3")
-    implementation("androidx.activity:activity-compose:1.11.0")
+    implementation(libs.haze)
+    implementation(libs.activityCompose)
 
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(libs.junit)
 }

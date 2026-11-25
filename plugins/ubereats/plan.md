@@ -1,5 +1,13 @@
 # Maintenance and Repair Plan
 
+## Current monorepo status — 2026-11-25
+
+The migration PR [#2](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/pull/2) is merged. The imported application remains `:ubereats` at version `0.1.1` (alpha, versionCode 101). Do not use the former migration branch as the development baseline; branch from the current monorepo `main`.
+
+The final migration validation [Build plugin suite #21](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45719944978) passed all three unit-test tasks, lint for all three apps, all three builds, and artifact uploads. The subsequent main build [#45721585024](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45721585024) also passed.
+
+The old Build suite #10/#12 references later in this document are migration-era evidence, not pending jobs. The current module-specific handoff is [continue.md](continue.md). Real-order validation and Android notification adapter/state tests remain open. The previous standalone README's Play Protect wording is not present in the monorepo README.
+ 
 ## Baseline
 
 - Source repository: `INFORMATION89/UberEats-Smartspacer` (imported into `plugins/ubereats/`)
@@ -14,7 +22,7 @@ The plugin has a sound basic shape: it is a native Kotlin Android app, uses Jetp
 
 The UI is not entirely hand-drawn. It uses Material 3 components, dynamic system colors on Android 12+, and Google Sans Text. The bespoke parts are concentrated in the animated preview, blur/header treatment, custom row/icon treatments, and the pull-to-open Source code interaction. Those are Compose implementations, not evidence that the whole screen should be replaced.
 
-The main maintenance risks are the oversized settings file and Android notification event handling. Debug logging of notification contents was identified in the standalone audit and sanitized during migration. Pure-Kotlin tests now cover bounded remembered keys, food-channel/text classification, English/Spanish terms, ride rejection, and current score weights. Build plugin suite [#10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032) passed this module's unit tests, lint, release build, and artifact upload. Build suite #12 attempt 2 is validating the newest classifier/scoring tests plus the full pipeline.
+The main maintenance risks are the oversized settings file and Android notification event handling. Debug logging of notification contents was identified in the standalone audit and sanitized during migration. Pure-Kotlin tests now cover bounded remembered keys, food-channel/text classification, English/Spanish terms, ride rejection, and current score weights. Build plugin suite [#10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032) passed this module's unit tests, lint, release build, and artifact upload. Final pre-merge suite #21 and the subsequent main run #45721585024 passed. Treat suite #10/#12 as historical migration runs.
 
 ## Findings
 

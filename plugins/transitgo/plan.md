@@ -1,15 +1,23 @@
 # Maintenance and Repair Plan
 
+## Current monorepo status — 2026-11-25
+
+The migration PR [#2](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/pull/2) is merged. The imported application remains `:transitgo` at version `1.3.1` (versionCode 10301). Do not use the former migration branch as the development baseline; branch from the current monorepo `main`.
+
+The final migration validation [Build plugin suite #21](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45719944978) passed all three unit-test tasks, lint for all three apps, all three builds, and artifact uploads. The subsequent main build [#45721585024](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45721585024) also passed.
+
+The migration-era suite #10/#12 references below are historical, not running validations. The Settings UI extraction, privacy-diagnostic cleanup, and renderer hardening described below are already in the imported code. The current module-specific handoff is [continue.md](continue.md); remaining work is principally listener/RemoteViews test coverage and physical-device validation. The old standalone README's Play Protect wording is not present in the monorepo README.
+
 ## Current implementation progress
 
-Working branch: `migration/add-ubereats-transitgo-monorepo`. Source: `INFORMATION89/Transit-GO-Smartspacer`, branch `fix/privacy-safe-diagnostics`, commit `23cdbd42ce508f93e759bc7202c45837ff8a2e2b`. No release version, signing configuration, or official release has been changed.
+The source tree was imported by the merged monorepo migration PR #2; continue from the current monorepo main branch. Source: `INFORMATION89/Transit-GO-Smartspacer`, branch `fix/privacy-safe-diagnostics`, commit `23cdbd42ce508f93e759bc7202c45837ff8a2e2b`. No release version, signing configuration, or official release has been changed.
 
 - **Privacy diagnostics — implemented in source:** automatic layout dumps and `LayoutDumper.kt` were removed; trip content is no longer written to normal Logcat diagnostics.
 - **Logic tests — partially complete:** `TransitGoLogicTest.kt` covers package/channel filtering, live-trip versus group-summary flags, English/Spanish bike wording, unknown wording fallback, notification-removal matching, and visible-content comparison. Listener lifecycle and RemoteViews parsing still need dedicated coverage.
 - **Integration/rendering code — implemented, device gate open:** `TransitNotificationContract.kt` centralizes package/channel and observed RemoteViews IDs. `ChipRenderer` uses display-resource width, caps output bitmaps at 512 px, synchronizes the ID cache, and avoids stack traces in logs. Validate the actual RemoteViews behavior on devices before closing this work.
 - **Settings architecture — extraction complete, visual gate open:** `SettingsActivity.kt`, `TransitGoSettingsScreen.kt`, `SettingsPreview.kt`, `SettingsComponents.kt`, `SettingsMotion.kt`, `SettingsTheme.kt`, and `TransitGoSettingsTokens.kt` have focused responsibilities. The existing single settings destination is preserved.
 - **Source CI — passed:** the standalone branch completed unit tests, Android Lint, and release APK assembly in Build run [#48](https://github.com/INFORMATION89/Transit-GO-Smartspacer/actions/runs/45710785597).
-- **Monorepo CI — passed:** Build plugin suite [#10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032) completed successfully, including tests, lint across all three apps, all APK builds, and the `transit-go-plugin` artifact upload. Build suite #12 attempt 2 is repeating the pipeline after the final Uber Eats classifier tests.
+- **Monorepo CI — passed:** Build plugin suite [#10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032) completed successfully, including tests, lint across all three apps, all APK builds, and the `transit-go-plugin` artifact upload. Final pre-merge suite #21 and the subsequent main run #45721585024 passed. Treat suite #10/#12 as historical migration runs.
 - Earlier intermediate compile failures in the source branch were corrected; they are historical and are not evidence of the new monorepo build status.
 
 ## Baseline

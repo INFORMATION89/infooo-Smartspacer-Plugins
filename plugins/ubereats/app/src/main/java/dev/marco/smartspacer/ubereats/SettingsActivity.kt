@@ -165,7 +165,7 @@ import com.kieronquinn.app.smartspacer.sdk.provider.SmartspacerTargetProvider
 class SettingsActivity : ComponentActivity() {
 
     private companion object {
-        const val SOURCE_URL = "https://github.com/INFORMATION89/UberEats-Smartspacer"
+        const val SOURCE_URL = "https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/tree/main/plugins/ubereats"
         /** Notification access is on: the same green in light and dark, so "working" reads at a glance */
         val ACCESS_GREEN = Color(0xFF1E8E3E)
         /** Share of the screen's height to drag past the end for the Source code chip to open the repo */

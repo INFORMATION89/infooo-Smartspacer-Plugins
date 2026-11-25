@@ -155,3 +155,29 @@ The root `continue.md` now reflects that Gradle module wiring and the initial CI
 - Final pre-merge validation: [Build plugin suite #21](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45719944978) passed all three test tasks, Android Lint for all three apps, all three APK builds, and uploads for `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
 - No release tags or releases were created. The source repositories were not archived or deleted.
 - Remaining follow-up: update the source repositories' remotes/workflows to point to the monorepo locations and decide separately whether to close the original repositories. Physical-device and extended notification-adapter tests remain release-readiness follow-up; CI did not perform those checks.
+
+
+## Repository hardening and build consolidation — 2026-11-25
+
+### Phase 1 — Repository hardening
+
+- Refresh the root and per-plugin continuation handoffs after PR #2 was merged; remove references to the migration branch and stale intermediate CI runs.
+- Point the Uber Eats and Transit GO in-app Source code actions at their folders in this monorepo.
+- Add `docs/ARCHITECTURE.md` to document the independent application boundaries and the ownership of `:shared`/`:systemstubs`.
+- Add `.github/BRANCH_PROTECTION.md` with the intended `main` protection settings. This documentation does not apply the GitHub setting; an administrator still needs to enable it.
+- Review old refs before cleanup. `add-transit-go` has six commits not present in main and must be preserved. `migration/add-ubereats-transitgo-monorepo` and `transit-go-updates` have no commits ahead of main and are cleanup candidates.
+
+### Phase 2 — Build and release infrastructure
+
+- Add `gradle/libs.versions.toml` for root Gradle plugin versions and dependencies duplicated by Uber Eats and Transit GO.
+- Migrate those two application modules to catalog aliases without changing dependency versions, application IDs, SDK levels, versions, or signing behavior.
+- Add weekly Dependabot update proposals for Gradle and GitHub Actions.
+- Replace the three duplicated release implementations with per-plugin tag/configuration entry points that call `.github/workflows/_release-android-plugin.yml`.
+- The reusable release workflow validates the tag against the module `versionName`, runs the module's unit tests and release lint, preserves the existing signing integration for each module family, verifies exactly one APK matches, and publishes only that APK.
+
+### Acceptance and remaining manual work
+
+- Root Build plugin suite must pass on the pull request before merging.
+- Apply `main` branch protection in GitHub settings as described in `.github/BRANCH_PROTECTION.md`.
+- Delete only the two fully merged/behind branches after an administrator confirms they are no longer needed; preserve `add-transit-go` because it contains unique commits.
+- Do not perform a broad AGP/Kotlin/Compose upgrade in the same change. A separate toolchain update needs its own compatibility and device validation.

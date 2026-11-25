@@ -1,117 +1,45 @@
 # Continue development
 
-This file is the handoff for the next coding session. Follow [rules.md](rules.md) throughout; use [plan.md](plan.md) for the full audit findings and acceptance criteria. Release/versioning instructions are in [CLAUDE.md](CLAUDE.md).
+Read the root [AGENTS.md](../../AGENTS.md), [rules.md](../../rules.md), [CLAUDE.md](../../CLAUDE.md), and [docs/ARCHITECTURE.md](../../docs/ARCHITECTURE.md), then this module's [AGENTS.md](AGENTS.md), [rules.md](rules.md), [plan.md](plan.md), and [CLAUDE.md](CLAUDE.md).
 
 ## Current state
 
 - Repository: `INFORMATION89/infooo-Smartspacer-Plugins`
-- Module: `:ubereats` (`plugins/ubereats/app`)
-- Working branch: `migration/add-ubereats-transitgo-monorepo`
-- Imported source: `INFORMATION89/UberEats-Smartspacer` at `3d1e6fea2e86945e9276086a2310e0565112b9c0`
-- Application version: `0.1.1` (`versionCode = 101`); retain the alpha status until a real order has been tested.
-- Uber Eats debug diagnostics were sanitized during migration: raw extra values and full notification keys are no longer logged; parser failures log only the exception type; removal events are filtered to supported Uber packages.
-- Monorepo Build plugin suite [#10](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45717957032) passed `:ubereats:testDebugUnitTest`, `:ubereats:lintRelease`, `:ubereats:assembleRelease`, and the `uber-eats-plugin` artifact upload.
-- Pure-Kotlin tests now cover bounded key storage, food channel/text classification, English/Spanish wording, ride rejection, and current score weights. Build suite #12 attempt 2 passed the newest unit-test step; lint and APK assembly are still running.
+- Module: `:ubereats` at `plugins/ubereats/app`
+- Application ID: `dev.marco.smartspacer.ubereats`
+- Version: `0.1.1` (`versionCode = 101`, alpha).
+- Migration PR [#2](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/pull/2) is merged into main.
+- Latest verified main suite before repository hardening: [Build plugin suite #45721585024](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45721585024) passed tests, lint, all three APK builds, and all three artifact uploads.
+- Shared imported-app dependencies are declared through the root `gradle/libs.versions.toml`; keep product-specific dependencies and application settings owned by this module.
+- The in-app Source code link now points to this module's monorepo directory.
+- Preserve the current version and permanent signing identity. No release tag or new release was created by the migration.
 
-## How to resume
+## Implemented safeguards
 
-1. Read the root [AGENTS.md](../../AGENTS.md), [rules.md](../../rules.md), [plan.md](../../plan.md), and [continue.md](../../continue.md), then the module's [AGENTS.md](AGENTS.md), [rules.md](rules.md), [plan.md](plan.md), and [CLAUDE.md](CLAUDE.md).
-2. Work on a focused branch based on the current monorepo. Never edit `main` directly.
-3. Run `./gradlew :ubereats:testDebugUnitTest :ubereats:lintRelease :ubereats:assembleRelease` from the repository root.
-4. Keep changes focused and update this handoff with exact verification results.
+- Notification ingestion is filtered to `com.ubercab.eats` and `com.ubercab` before reading notification content.
+- Uber app food-order classification is isolated in a pure Kotlin classifier and covered by synthetic tests for food wording/channel signals and ride rejection.
+- Candidate state is capped at 16 entries and expires after 12 hours.
+- Remembered Uber food notification keys are capped at 32 and expire after 12 hours.
+- Debug diagnostics do not log raw notification text, extra values, full notification keys, courier details, or exception stack traces.
+- Listener disconnection clears in-memory order state.
 
-## Implementation order
+## Remaining work
 
-### Phase 1 — Remove sensitive debug output <sub>Implemented; device Logcat check remains</sub>
+1. Add Android notification adapter/state tests for ETA-only updates, candidate selection, source package filtering, state comparison, removal, and listener reconnection.
+2. Refactor the large `SettingsActivity.kt` into focused Activity, screen, preview, components, motion, theme, and token files. Preserve the current visual behavior, dynamic colors, Google Sans typography, localized resources, preference keys/defaults, and Source code gesture.
+3. Add explicit bitmap size/resource limits for the courier photo and verify Binder/card behavior on device.
+4. Validate real food orders from both Uber Eats and the Uber app. Confirm ordinary rides/promotions are ignored, ETA updates work, tapping opens the correct order, and revoking notification access clears the card.
 
-- `OrderReader.logNotification()` now logs only package, flags, category, channel, presence of title/body fields, and extra key/type names.
-- Raw notification extra values and the full notification key are no longer logged.
-- Parser failures log the exception type only; no exception message or stack trace is forwarded to Logcat.
-- Notification removal callbacks filter package before forwarding the key.
+## Validation
 
-**Remaining validation:** inspect Logcat in a debug installation using synthetic notifications. Do not share logs containing real order data.
+From the repository root:
 
-### Phase 2 — Add parser and state tests
+```bash
+./gradlew :ubereats:testDebugUnitTest :ubereats:lintRelease :ubereats:assembleRelease
+```
 
-The remembered Uber food-order key store is bounded to 32 keys with a 12-hour TTL and has tests for expiry, capacity, refresh, and clearing. The candidate map is capped at 16 entries and drops entries older than 12 hours when a new notification event is processed. The pure classifier/scoring boundary is also extracted and tested for food channels, English/Spanish food wording, ride rejection, and current score weights.
-
-Still add Android notification-adapter/state tests and sanitized fixtures covering:
-
-- A live order from the Uber Eats app.
-- A food order placed through the Uber app.
-- An ordinary Uber ride (must not become a food-order card).
-- A promotion or unrelated notification (must be ignored).
-- An order update containing only an ETA / short critical text.
-- Multiple candidate notifications and candidate scoring.
-- Notification removal, listener disconnection, and state clearing.
-- Repeated notifications that have no visible change but have a refreshed tap action.
-
-Prefer pure Kotlin tests for scoring, filtering, parsing decisions, and state comparison. Avoid committing real notification payloads, names, addresses, order IDs, or photos.
-
-**Gate:** every expected classification has a regression test before changing the current heuristics.
-
-### Phase 3 — Make notification parsing more resilient
-
-- Centralize package identifiers, notification extra keys, category values, flags, and scoring assumptions.
-- Prefer structured notification metadata; retain text matching only where necessary.
-- Test the English and Spanish forms that the plugin claims to support, plus source-app text in other languages where metadata is sufficient.
-- Handle missing or malformed extras without crashing or leaving stale order state.
-- Do not add network access or attempt to reverse-engineer private APIs beyond the notification information already available.
-
-**Gate:** pure classifier/scoring tests pass, and Android notification integration tests confirm ride, promotion, and food-order notifications remain distinct.
-
-### Phase 4 — Split and simplify the settings UI
-
-Refactor `SettingsActivity.kt` (1,121 lines at audit) without redesigning the screen:
-
-1. Keep Activity lifecycle and Android navigation in `SettingsActivity`.
-2. Move screen composition and list structure into a focused settings screen file.
-3. Separate the preview card and its presentation helpers.
-4. Separate settings rows, icon badges, and section headers.
-5. Separate pull-to-open gesture/animation code.
-6. Move theme and typography into their own file.
-7. Centralize repeated dimensions, shapes, colors, and animation values in a small Compose token layer.
-
-Continue using Material 3 for ordinary controls and surfaces. Preserve dynamic colors, Google Sans Text, localization, live preview, setting persistence, and the intentional Source code interaction. Do not replace the entire UI or extract a shared library with Transit GO.
-
-**Gate:** compare before/after screenshots in light, dark, and dynamic-color themes; settings and preview behave as before.
-
-### Phase 5 — Improve automated verification
-
-- Add a testable parser boundary and sanitized unit tests for food-vs-ride classification, candidate scoring, ETA-only updates, removal, and listener reconnection.
-- The monorepo workflow already runs `:ubereats:testDebugUnitTest`, `:ubereats:lintRelease`, and `:ubereats:assembleRelease`.
-- Keep the APK build step scoped to this module.
-- Run the three commands locally and in CI:
-  - `./gradlew :ubereats:testDebugUnitTest`
-  - `./gradlew :ubereats:lintRelease`
-  - `./gradlew :ubereats:assembleRelease`
-
-**Gate:** all available checks pass on the pull request. If an Android-dependent test cannot run in the CI environment, document the limitation instead of silently skipping it.
-
-### Phase 6 — Validate with a real order
-
-The existing alpha release notes explicitly say real-order validation has not been completed.
-
-- Install a test build on a device with Uber Eats and/or Uber installed.
-- Verify a real food order appears and updates through preparing, pickup, en route, ETA, and completion states as available.
-- Verify a regular Uber ride and promotional notifications do not appear as food orders.
-- Verify tapping the card opens the correct source app/order.
-- Verify notification access can be revoked and restored without leaving a stale card.
-- Compare courier-photo and fallback-icon behavior.
-- Do not publish a new release until this validation is recorded.
-
-## Final review
-
-Before declaring the work complete:
-
-- Confirm no Internet permission, network client, analytics, or telemetry was added.
-- Confirm only the expected source-app notifications are read.
-- Confirm source notifications are never cancelled or modified.
-- Confirm all plugin-owned UI strings remain in Android resources and English/Spanish translations stay in sync.
-- Confirm the README no longer advises users to disable Play Protect.
-- Review the full diff and report unverified device-only behavior.
-- Update this file with completed phases and remaining work.
+CI success does not validate real Uber notifications, courier image rendering, settings gestures, or preference persistence on physical devices. Record those checks separately.
 
 ## Release boundary
 
-Do not bump versions, push tags, edit release notes for publication, change signing configuration, or publish a GitHub release without explicit approval. Follow [CLAUDE.md](CLAUDE.md) and ask before any release action.
+Do not bump the version, push a tag, change signing configuration, update release metadata for publication, or publish a GitHub release without explicit approval.
