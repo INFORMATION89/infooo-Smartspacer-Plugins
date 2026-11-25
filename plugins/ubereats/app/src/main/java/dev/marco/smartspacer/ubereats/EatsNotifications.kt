@@ -123,13 +123,6 @@ object OrderReader {
      * its notifications only count when they look like food: a channel named for orders, or
      * order words in the text with no ride words. Uber Eats' own app needs no such check.
      */
-    private val FOOD_CHANNEL = Regex("eats|order|deliver|food", RegexOption.IGNORE_CASE)
-    private val FOOD_WORDS = Regex(
-        "\\b(order|food|restaurant|courier|delivery|delivered|pedido|comida|restaurante|repartidor|entrega)",
-        RegexOption.IGNORE_CASE
-    )
-    private val RIDE_WORDS = Regex("\\b(driver|ride|trip|conductor|viaje)", RegexOption.IGNORE_CASE)
-
     private const val MAX_CANDIDATES = 16
     private const val MAX_REMEMBERED_UBER_FOOD_KEYS = 32
     /** A stuck notification should not keep order state or a remembered food key forever. */
@@ -240,14 +233,14 @@ object OrderReader {
         }
         val courier = n.getLargeIcon()?.bitmap(context)?.circleCrop()
 
-        val score = listOf(
-            isProgressStyle to 3,
-            isPromoted to 2,
-            (progress != null) to 2,
-            isOngoing to 1,
-            (n.category in ORDER_CATEGORIES) to 1,
-            (eta != null || shortCritical != null) to 1
-        ).sumOf { (matches, points) -> if (matches) points else 0 }
+        val score = OrderNotificationScoring.score(
+            isProgressStyle = isProgressStyle,
+            isPromoted = isPromoted,
+            hasProgress = progress != null,
+            isOngoing = isOngoing,
+            hasOrderCategory = n.category in ORDER_CATEGORIES,
+            hasEtaOrCriticalText = eta != null || shortCritical != null
+        )
 
         return Candidate(
             OrderState(
@@ -271,9 +264,11 @@ object OrderReader {
     private fun isUberFood(sbn: StatusBarNotification, title: String, body: String?): Boolean {
         val now = System.currentTimeMillis()
         if (uberFoodKeys.containsAndRefresh(sbn.key, now)) return true
-        val words = listOfNotNull(title, body).joinToString(" ")
-        val food = sbn.notification.channelId?.let { FOOD_CHANNEL.containsMatchIn(it) } == true ||
-            (FOOD_WORDS.containsMatchIn(words) && !RIDE_WORDS.containsMatchIn(words))
+        val food = UberFoodNotificationClassifier.looksLikeFoodOrder(
+            channelId = sbn.notification.channelId,
+            title = title,
+            body = body
+        )
         if (food) uberFoodKeys.remember(sbn.key, now)
         return food
     }
