@@ -1,6 +1,6 @@
 # Repository Rules
 
-These rules apply to all human and AI-assisted changes in this repository. Read `CLAUDE.md` and `plan.md` before making changes.
+These rules apply to changes in the `:transitgo` module. Follow the root [AGENTS.md](../../AGENTS.md) and [rules.md](../../rules.md), then read the local `AGENTS.md`, `CLAUDE.md`, and `plan.md` before making changes.
 
 ## Product boundaries
 
@@ -58,16 +58,16 @@ These rules apply to all human and AI-assisted changes in this repository. Read 
 - Keep notification ingestion/state, Transit parsing/rendering, Smartspacer target construction, settings persistence, and UI as separate responsibilities.
 - Favor small, named functions and focused files. Avoid speculative abstractions and unnecessary dependencies.
 - Keep existing settings compatible. Handle missing notification content, unexpected layout variants, and enum parsing safely.
-- Do not introduce a cross-repository dependency on Uber Eats or another plugin. This repository must remain self-contained.
+- Do not introduce a cross-module dependency on Uber Eats or the original Uber ride plugin. Transit GO must remain independently buildable and installable.
 - Do not perform broad formatting or unrelated cleanup in the same change as a functional fix.
 
 ## Verification
 
 Before finishing a change:
 
-1. Run `./gradlew testDebugUnitTest`.
-2. Run `./gradlew lintRelease`.
-3. Run `./gradlew assembleRelease`.
+1. Run `./gradlew :transitgo:testDebugUnitTest` from the repository root.
+2. Run `./gradlew :transitgo:lintRelease`.
+3. Run `./gradlew :transitgo:assembleRelease`.
 4. Review the diff for accidental permission, package, resource, or release changes.
 5. State which commands passed and which could not be run. Never claim tests passed if they were not executed.
 

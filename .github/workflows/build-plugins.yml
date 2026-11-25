@@ -8,23 +8,23 @@ on:
       - 'uber/**'
       - 'shared/**'
       - 'systemstubs/**'
-      - 'plugins/**'
+      - 'plugins/*/app/**'
       - 'build.gradle'
       - 'settings.gradle'
       - 'gradle.properties'
       - 'gradle/**'
-      - '.github/workflows/build-plugins.yml'
+      - '.github/workflows/**'
   pull_request:
     paths:
       - 'uber/**'
       - 'shared/**'
       - 'systemstubs/**'
-      - 'plugins/**'
+      - 'plugins/*/app/**'
       - 'build.gradle'
       - 'settings.gradle'
       - 'gradle.properties'
       - 'gradle/**'
-      - '.github/workflows/build-plugins.yml'
+      - '.github/workflows/**'
 
 permissions:
   contents: read
