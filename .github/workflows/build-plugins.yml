@@ -46,7 +46,7 @@ jobs:
         run: |
           echo "sdk.dir=$ANDROID_HOME" > local.properties
           chmod +x gradlew
-          ./gradlew :ubereats:testDebugUnitTest :transitgo:testDebugUnitTest --stacktrace
+          ./gradlew :uber:testDebugUnitTest :ubereats:testDebugUnitTest :transitgo:testDebugUnitTest --stacktrace
 
       - name: Run Android lint
         run: ./gradlew :uber:lintRelease :ubereats:lintRelease :transitgo:lintRelease --stacktrace
