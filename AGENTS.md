@@ -28,7 +28,7 @@ Read this file before making changes. Then read [rules.md](rules.md), [CLAUDE.md
 
 ## Validation
 
-Run the affected module's tests, lint, and build. For the current plugin suite, use the commands in the root README. Inspect the manifest, package IDs, permissions, signing configuration, resource paths, and complete diff.
+Run the affected module's tests, lint, and build. For the full suite, CI invokes `:uber:testDebugUnitTest`, `:ubereats:testDebugUnitTest`, and `:transitgo:testDebugUnitTest`, release lint for all three apps, and builds all three APKs. Only Uber Eats and Transit GO currently have unit-test source sets; the Uber test task is still invoked but has no imported tests. See the root README for commands. Inspect the manifest, package IDs, permissions, signing configuration, resource paths, and complete diff.
 
 Be explicit about checks that cannot be performed without a real device or a real source-app notification. Never describe a static audit or successful CI run as device validation.
 
