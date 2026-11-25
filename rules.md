@@ -47,7 +47,7 @@ These rules apply to human and AI-assisted changes across the Smartspacer plugin
 ## Tests and CI
 
 - Add sanitized unit tests for notification filtering, parser decisions, state changes, formatting, and edge cases.
-- CI must run tests and Android Lint for modules that provide them, and build each maintained APK independently.
+- CI invokes the unit-test task for `:uber`, `:ubereats`, and `:transitgo`, runs release lint for all three, and builds each maintained APK independently. The current `:uber` module has no imported unit-test source set; its task is still invoked to validate Gradle task configuration. Uber Eats and Transit GO have separate unit tests.
 - Do not commit real notifications, names, routes, addresses, orders, courier/driver data, or images as fixtures.
 - Report device-only checks separately from automated checks.
 
