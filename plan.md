@@ -96,3 +96,37 @@ Only after behavioral parity and ownership are clear, consider sharing Compose U
 - Combining plugin applications into one APK.
 - Introducing a cross-plugin runtime dependency or backend.
 - Publishing releases as part of the move.
+
+
+## Audit progress — 2026-11-25
+
+### Confirmed in the migration branch
+
+- Root Gradle settings include `:uber`, `:ubereats`, and `:transitgo`; the two imported apps are mapped to `plugins/<plugin>/app`.
+- Root repositories are centralized through `dependencyResolutionManagement`; inspected existing `:uber`, `:shared`, and `:systemstubs` build files do not declare their own repositories.
+- The original `:uber` application ID, namespace, version, provider and notification-provider components remain present.
+- Uber Eats and Transit GO retain separate application IDs, namespaces, Smartspacer target authorities, notification-listener services, local settings and version metadata.
+- The two imported manifests declare package-visibility `<queries>` only; no `<uses-permission>` declaration was found in either imported manifest.
+- Notification listeners filter source packages before parsing. Transit GO additionally checks the `go_mode` channel using short-circuit package filtering.
+- Uber Eats and Transit GO clear in-memory state on listener disconnection; removal callbacks are scoped to supported source notifications.
+- Transit GO diagnostics log structural booleans/flags only. Uber Eats diagnostics log package/channel/category/flags and extra key/type names, not extra values, notification content, or the full StatusBarNotification key.
+- Release workflows use distinct tag prefixes and only copy the intended plugin APK. No tag or release has been created as part of this migration.
+
+### CI evidence
+
+- PR workflow run [#6](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45716970751) reported both imported modules' unit tests and release lint as successful.
+- At the time of this audit, the APK build step was still running and artifact uploads had not yet been confirmed. The workflow must not be called fully green until its final conclusion is success and all three artifacts are present.
+- The root workflow currently runs unit tests and lint for `:ubereats` and `:transitgo`; the original `:uber` module has no corresponding unit-test suite in this migration and is built as a debug APK. Consider adding `:uber:lintRelease` after confirming its compatibility with the current root toolchain.
+
+### Remaining audit findings
+
+- Uber Eats still has a large, concentrated `SettingsActivity.kt`; refactor it in a separate behavior-preserving task after migration validation.
+- Uber Eats has no imported unit-test source set. Its notification scoring, Uber-food-vs-ride classification, ETA-only updates, candidate selection and listener lifecycle need synthetic tests.
+- Uber Eats' in-memory candidate map and remembered Uber food notification keys should be reviewed for bounded growth and stale-candidate behavior under repeated notification updates.
+- Transit GO relies on private Transit RemoteViews layouts and resource IDs. This remains inherently fragile and requires real-device validation after Transit app updates.
+- Both apps require real notification/device checks; successful CI does not validate live order/trip behavior, RemoteViews rendering, screen density, settings gestures, or preference persistence.
+- New `plugin.json` download URLs are intended for future monorepo releases. Do not treat the new plugins as published until their respective release tags and signed APK assets exist.
+
+### Migration documentation correction
+
+The root `continue.md` now reflects that Gradle module wiring and the initial CI workflow are already present. Its remaining steps focus on final CI/artifact verification, audit completion, documentation accuracy and device validation.
