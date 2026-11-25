@@ -64,4 +64,6 @@ dependencies {
     // Blurred, translucent header over the list (backdrop blur on Android 12+, a tint before)
     implementation("dev.chrisbanes.haze:haze:1.7.3")
     implementation("androidx.activity:activity-compose:1.11.0")
+
+    testImplementation("junit:junit:4.13.2")
 }

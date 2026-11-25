@@ -130,17 +130,47 @@ object OrderReader {
     )
     private val RIDE_WORDS = Regex("\\b(driver|ride|trip|conductor|viaje)", RegexOption.IGNORE_CASE)
 
-    /** Uber app notifications already seen to be a food order, so later updates that only say
-     *  "Arriving at 7:42 PM" still count. Cleared when the notification goes away. */
-    private val uberFoodKeys = HashSet<String>()
+    private const val MAX_CANDIDATES = 16
+    private const val MAX_REMEMBERED_UBER_FOOD_KEYS = 32
+    /** A stuck notification should not keep order state or a remembered food key forever. */
+    private const val TRACKED_NOTIFICATION_MAX_AGE_MS = 12L * 60 * 60 * 1000
+
+    /** Uber app notifications already seen to be a food order, so ETA-only updates still count. */
+    private val uberFoodKeys = BoundedNotificationKeyStore(
+        maxEntries = MAX_REMEMBERED_UBER_FOOD_KEYS,
+        maxAgeMillis = TRACKED_NOTIFICATION_MAX_AGE_MS
+    )
 
     private class Candidate(val state: OrderState, val score: Int, val postTime: Long)
 
-    /** Order-looking Uber Eats notifications by key (usually just one) */
+    /** Order-looking notifications by key (usually just one); bounded and expired defensively. */
     private val candidates = LinkedHashMap<String, Candidate>()
+
+    private fun pruneCandidates(now: Long): Boolean {
+        val cutoff = now - TRACKED_NOTIFICATION_MAX_AGE_MS
+        val expiredKeys = candidates.entries
+            .filter { it.value.postTime < cutoff }
+            .map { it.key }
+        expiredKeys.forEach(candidates::remove)
+
+        var changed = expiredKeys.isNotEmpty()
+        while (candidates.size > MAX_CANDIDATES) {
+            val oldestKey = candidates.minByOrNull { it.value.postTime }?.key ?: break
+            candidates.remove(oldestKey)
+            changed = true
+        }
+        return changed
+    }
+
+    private fun pruneTrackedState(now: Long = System.currentTimeMillis()): Boolean {
+        uberFoodKeys.prune(now)
+        return pruneCandidates(now)
+    }
 
     @Synchronized
     fun onPosted(context: Context, sbn: StatusBarNotification) {
+        val now = System.currentTimeMillis()
+        pruneTrackedState(now)
         val isDebug = context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
         if (isDebug) logNotification(sbn)
         val parsed = runCatching { parse(context, sbn) }
@@ -148,13 +178,15 @@ object OrderReader {
             .getOrNull()
         if (parsed != null && parsed.score >= MIN_SCORE) candidates[sbn.key] = parsed
         else candidates.remove(sbn.key)
+        pruneTrackedState(now)
         publish(context)
     }
 
     @Synchronized
     fun onRemoved(context: Context, key: String) {
         uberFoodKeys.remove(key)
-        if (candidates.remove(key) != null) publish(context)
+        val expired = pruneCandidates(System.currentTimeMillis())
+        if (candidates.remove(key) != null || expired) publish(context)
     }
 
     @Synchronized
@@ -237,11 +269,12 @@ object OrderReader {
 
     /** Whether a notification from the Uber app is a food order (not a ride). */
     private fun isUberFood(sbn: StatusBarNotification, title: String, body: String?): Boolean {
-        if (sbn.key in uberFoodKeys) return true
+        val now = System.currentTimeMillis()
+        if (uberFoodKeys.containsAndRefresh(sbn.key, now)) return true
         val words = listOfNotNull(title, body).joinToString(" ")
         val food = sbn.notification.channelId?.let { FOOD_CHANNEL.containsMatchIn(it) } == true ||
             (FOOD_WORDS.containsMatchIn(words) && !RIDE_WORDS.containsMatchIn(words))
-        if (food) uberFoodKeys += sbn.key
+        if (food) uberFoodKeys.remember(sbn.key, now)
         return food
     }
 
