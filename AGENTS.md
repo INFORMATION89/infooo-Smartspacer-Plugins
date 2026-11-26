@@ -26,11 +26,17 @@ Read this file before making changes. Then read [rules.md](rules.md), [CLAUDE.md
 - Never cancel, dismiss, or modify source-app notifications.
 - Do not add Internet permission, telemetry, analytics, remote logging, or a backend without explicit approval.
 
-## Validation
+## Validation and verification budget
 
-Run the affected module's tests, lint, and build. For the full suite, CI invokes `:uber:testDebugUnitTest`, `:ubereats:testDebugUnitTest`, and `:transitgo:testDebugUnitTest`, release lint for all three apps, and builds all three APKs. Only Uber Eats and Transit GO currently have unit-test source sets; the Uber test task is still invoked but has no imported tests. See the root README for commands. Inspect the manifest, package IDs, permissions, signing configuration, resource paths, and complete diff.
+Before running checks, identify the affected plugin(s), acceptance criteria, smallest relevant tests/lint/build tasks, full CI work, and any device-only requirements.
 
-Be explicit about checks that cannot be performed without a real device or a real source-app notification. Never describe a static audit or successful CI run as device validation.
+- During implementation, run only the focused tasks that cover the current change. Batch related changes before pushing so the full pull-request workflow runs once for a coherent batch.
+- The complete CI suite invokes `:uber:testDebugUnitTest`, `:ubereats:testDebugUnitTest`, and `:transitgo:testDebugUnitTest`, release lint for all three apps, and builds all three APKs. Only Uber Eats and Transit GO currently have unit-test source sets; the Uber test task is still invoked but has no imported tests. See the root README for commands.
+- Reuse successful results for the same commit and environment. If a single CI job fails, inspect its logs and retry only the failed job where possible; do not rerun passing jobs without a technical reason.
+- For an infrastructure/environment failure, make at most one materially different retry. If it fails for the same reason, stop and report the blocker instead of repeating attempts.
+- Ask before adding a substantially larger test matrix or requesting another full CI run beyond the agreed plan.
+- Inspect the manifest, package IDs, permissions, signing configuration, resource paths, and complete diff as part of the relevant review; do not repeat unrelated checks.
+- While real-device access is unavailable, CI is the current routine acceptance gate. Keep real notification and physical-device behavior explicitly `NOT TESTED` or `DEFERRED`; CI, static review, and emulator compilation do not prove live notification behavior. Run device-only checks only when the task or release gate explicitly requires them and the hardware/source app is available.
 
 ## Git and releases
 
