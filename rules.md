@@ -49,7 +49,13 @@ These rules apply to human and AI-assisted changes across the Smartspacer plugin
 - Add sanitized unit tests for notification filtering, parser decisions, state changes, formatting, and edge cases.
 - CI invokes the unit-test task for `:uber`, `:ubereats`, and `:transitgo`, runs release lint for all three, and builds each maintained APK independently. The current `:uber` module has no imported unit-test source set; its task is still invoked to validate Gradle task configuration. Uber Eats and Transit GO have separate unit tests.
 - Do not commit real notifications, names, routes, addresses, orders, courier/driver data, or images as fixtures.
-- Report device-only checks separately from automated checks.
+- Report device-only checks separately from automated checks. CI success is not device validation.
+- Plan verification before running it: identify affected plugins, acceptance criteria, the smallest relevant checks, and any expensive CI/device checks.
+- Use focused module tests, lint, and builds while iterating. Batch related changes and push one coherent update before the full pull-request workflow; avoid triggering the complete suite for every small edit.
+- Reuse passing results for the same commit and relevant environment. When one CI job fails, inspect its logs and retry only that job where possible; do not rerun successful jobs without a technical reason.
+- For infrastructure/environment failures, allow at most one retry with a materially different setup. If the same requirement still fails, stop and mark it BLOCKED with the evidence and required access.
+- Ask before substantially expanding the agreed verification scope or spending another complete CI run after a failure.
+- While real-device access is unavailable, the current routine gate is the repository CI suite. Keep live-notification and physical-device checks explicitly NOT TESTED or DEFERRED; never treat CI as proof of real notification behavior.
 
 ## Releases
 
