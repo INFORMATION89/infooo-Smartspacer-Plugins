@@ -1,6 +1,6 @@
 # Repository instructions for AI agents
 
-Read this file before making changes. Then read [rules.md](rules.md), [CLAUDE.md](CLAUDE.md), [plan.md](plan.md), and [continue.md](continue.md). For a plugin, also read its nearest `AGENTS.md`, `rules.md`, `plan.md`, and `continue.md`.
+Read this file before making changes. Then read [rules.md](rules.md), [CLAUDE.md](CLAUDE.md), [plan.md](plan.md), and [continue.md](continue.md). Follow the model-selection and Opus-review workflow in `rules.md`; use Sonnet or ChatGPT as the standard implementation default and escalate to Opus only when the task warrants it. For a plugin, also read its nearest `AGENTS.md`, `rules.md`, `plan.md`, and `continue.md`.
 
 ## Project boundaries
 
