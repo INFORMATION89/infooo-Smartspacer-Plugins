@@ -49,5 +49,5 @@ dependencies {
     implementation project(path: ':shared')
 
     //Data storage
-    ksp "androidx.room:room-compiler:$room_version"
+    ksp libs.roomCompiler
 }
