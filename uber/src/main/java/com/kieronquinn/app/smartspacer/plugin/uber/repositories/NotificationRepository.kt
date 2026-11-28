@@ -58,7 +58,7 @@ class NotificationRepositoryImpl(private val context: Context): NotificationRepo
         val image = try {
             context.drawNotificationData(this)
         }catch (e: Exception) {
-            Log.w("UberPlugin", "Failed to render Uber target image", e)
+            Log.w("UberPlugin", "Failed to render Uber target image (${e.javaClass.simpleName})")
             null
         }
         return TargetData(notification, icon, title, subtitle, image)

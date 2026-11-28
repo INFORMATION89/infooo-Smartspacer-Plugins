@@ -22,7 +22,7 @@ private const val PREVIEW_TARGET_ID = "uber-settings-preview"
 internal fun Context.createUberPreviewTarget(
     data: TargetData?,
     showExpandedInfo: Boolean,
-    exampleImage: Bitmap
+    exampleImage: Bitmap?
 ): SmartspaceTarget {
     val title = data?.title ?: getString(R.string.preview_example_title)
     val subtitle = data?.subtitle ?: getString(R.string.preview_example_subtitle)

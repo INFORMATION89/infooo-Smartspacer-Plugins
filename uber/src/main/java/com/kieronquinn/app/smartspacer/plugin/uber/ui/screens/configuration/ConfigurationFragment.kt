@@ -42,7 +42,9 @@ class ConfigurationFragment: Fragment(), BackAvailable {
             val notifications by viewModel.notifications.collectAsState()
             val settings = (configState as? State.Loaded)?.targetData
                 ?: com.kieronquinn.app.smartspacer.plugin.uber.targets.UberTarget.UberTargetData()
-            val exampleImage = remember(context) { context.drawExampleTargetImage() }
+            val exampleImage = remember(context, settings.showExpandedInfo) {
+                if (settings.showExpandedInfo) context.drawExampleTargetImage() else null
+            }
             val activeNotification = notifications.firstOrNull()
             val previewTarget = remember(
                 activeNotification,
