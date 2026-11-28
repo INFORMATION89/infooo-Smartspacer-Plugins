@@ -52,3 +52,13 @@ Final pre-merge validation is recorded in [Build plugin suite #21](https://githu
 - Do not push tags or publish releases.
 - Do not archive or delete the source repositories.
 - The remaining migration follow-up is to update local clones to use the monorepo and its `plugins/ubereats/app` or `plugins/transitgo/app` path, update source repository READMEs/workflows to point to the monorepo, and decide separately how to close the originals.
+
+## Active work — PR #6
+
+- Draft PR: [Unify expressive settings and render real Smartspacer previews](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/pull/6).
+- The shared `:settings-ui` implementation for Uber Eats and Transit GO is on the PR branch, not merged to `main`.
+- Uber ride settings now use the shared Compose/Material 3 Expressive screen and preserve per-Target-instance configuration.
+- Uber's card now displays a percentage derived from the existing notification progress value. Focused tests cover null, non-finite, boundary, rounding, and out-of-range formatting.
+- The Uber preview uses the official Smartspacer renderer, live target data when present, and a labelled synthetic image otherwise. Preview targets omit real actions and notification metadata.
+- The progress-only revision passed the full plugin suite (#38). Two later settings-screen CI attempts failed on unavailable rounded icon references; those references were corrected. A final consolidated validation run remains pending approval.
+- Physical-device, live-notification, and visual preview checks remain unverified. Keep PR #6 in draft; do not merge or publish without explicit authorization.
