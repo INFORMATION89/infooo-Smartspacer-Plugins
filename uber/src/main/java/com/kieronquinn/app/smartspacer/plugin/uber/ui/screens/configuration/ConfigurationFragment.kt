@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.NotificationsOff
+import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -71,7 +74,7 @@ class ConfigurationFragment: Fragment(), BackAvailable {
                         SettingsSwitchPreference(
                             title = stringResource(R.string.configuration_show_expanded_info_title),
                             summary = stringResource(R.string.configuration_show_expanded_info_content),
-                            icon = androidx.compose.material.icons.Icons.Default.Visibility,
+                            icon = Icons.Rounded.Visibility,
                             checked = settings.showExpandedInfo,
                             enabled = configState is State.Loaded,
                             onCheckedChange = viewModel::onShowExpandedInfoChanged
@@ -80,7 +83,7 @@ class ConfigurationFragment: Fragment(), BackAvailable {
                         SettingsSwitchPreference(
                             title = stringResource(R.string.configuration_hide_notification_title),
                             summary = stringResource(R.string.configuration_hide_notification_content),
-                            icon = androidx.compose.material.icons.Icons.Default.NotificationsOff,
+                            icon = Icons.Rounded.NotificationsOff,
                             checked = settings.hideNotification,
                             enabled = configState is State.Loaded,
                             onCheckedChange = viewModel::onHideNotificationChanged
