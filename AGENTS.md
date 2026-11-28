@@ -44,3 +44,17 @@ Before running checks, identify the affected plugin(s), acceptance criteria, sma
 - Keep changes small enough to review, but fix root causes rather than layering workarounds.
 - Never bump versions, push tags, publish releases, change release signing identity, or alter GitHub release assets without explicit user approval.
 - Preserve source repositories and their history unless the user explicitly asks to archive or delete them.
+
+## Mandatory rule enforcement
+
+These instructions apply to every human and AI-assisted change. Before editing, read the root `rules.md` and all applicable local `AGENTS.md` and `rules.md` files. Treat them as mandatory acceptance criteria, not optional suggestions.
+
+- Root rules establish the repository-wide minimum. Local rules add constraints and do not waive or weaken root rules.
+- Before implementation, identify the applicable rules and turn them into a concise change-specific checklist. Re-check the checklist against the complete diff before reporting completion.
+- If required instructions cannot be read, stop and report the blocker rather than guessing or proceeding from partial context.
+- A task is not complete until implementation, tests, and the final diff have been checked against all applicable rules. Explicitly report requirements that could not be verified.
+- Never claim that a rule was followed or a check passed without direct evidence.
+
+## No-hardcoding requirement
+
+The root `rules.md` No hardcoding policy is mandatory. Do not embed configurable, environment-specific, externally owned, user-facing, secret, or product-policy values directly in implementation code when they belong in resources, build configuration, secure configuration, or a named domain/integration boundary. Keep genuine protocol/platform invariants centralized and documented. Do not add needless abstraction or resource indirection for harmless immutable literals.
