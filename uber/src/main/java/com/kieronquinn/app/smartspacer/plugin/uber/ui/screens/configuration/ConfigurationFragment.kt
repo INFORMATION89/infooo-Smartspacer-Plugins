@@ -69,7 +69,7 @@ class ConfigurationFragment: Fragment(), BackAvailable {
                         SettingsSwitchPreference(
                             title = stringResource(R.string.configuration_show_expanded_info_title),
                             summary = stringResource(R.string.configuration_show_expanded_info_content),
-                            icon = androidx.compose.material.icons.Icons.Rounded.Visibility,
+                            icon = androidx.compose.material.icons.Icons.Default.Visibility,
                             checked = settings.showExpandedInfo,
                             onCheckedChange = viewModel::onShowExpandedInfoChanged
                         )
@@ -77,7 +77,7 @@ class ConfigurationFragment: Fragment(), BackAvailable {
                         SettingsSwitchPreference(
                             title = stringResource(R.string.configuration_hide_notification_title),
                             summary = stringResource(R.string.configuration_hide_notification_content),
-                            icon = androidx.compose.material.icons.Icons.Rounded.NotificationsOff,
+                            icon = androidx.compose.material.icons.Icons.Default.NotificationsOff,
                             checked = settings.hideNotification,
                             onCheckedChange = viewModel::onHideNotificationChanged
                         )
