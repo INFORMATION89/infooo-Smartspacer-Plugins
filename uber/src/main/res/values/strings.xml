@@ -11,4 +11,9 @@
     <string name="target_configuration_settings_title">Settings</string>
     <string name="target_configuration_settings_description">Set whether to show dynamic information and hide the Uber notification on the lock screen</string>
 
+    <string name="settings_preview_title">Preview</string>
+    <string name="settings_preferences_title">Preferences</string>
+    <string name="preview_example_label">Example trip</string>
+    <string name="preview_example_title">Your driver is on the way</string>
+    <string name="preview_example_subtitle">Your Uber is approaching</string>
 </resources>

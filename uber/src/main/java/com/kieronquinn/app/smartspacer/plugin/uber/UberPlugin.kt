@@ -32,7 +32,7 @@ class UberPlugin: SmartspacerPlugin() {
             single { UberDatabase.getDatabase(get()) }
             single<DatabaseRepository> { DatabaseRepositoryImpl(get()) }
             single<NavGraphRepository> { NavGraphRepositoryImpl() }
-            viewModel<ConfigurationViewModel> { ConfigurationViewModelImpl(get()) }
+            viewModel<ConfigurationViewModel> { ConfigurationViewModelImpl(get(), get()) }
         }
     }
 

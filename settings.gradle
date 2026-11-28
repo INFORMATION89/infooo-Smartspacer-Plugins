@@ -20,6 +20,7 @@ include ':systemstubs'
 include ':uber'
 include ':ubereats'
 include ':transitgo'
+include ':settings-ui'
 
 project(':ubereats').projectDir = file('plugins/ubereats/app')
 project(':transitgo').projectDir = file('plugins/transitgo/app')
