@@ -38,7 +38,7 @@ The root workflow runs:
 - `:uber:assembleDebug`, `:ubereats:assembleRelease`, and `:transitgo:assembleRelease`.
 - A distinct artifact upload for each app.
 
-Final pre-merge validation is recorded in [Build plugin suite #21](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45719944978), which passed the expanded test tasks, lint, all three builds, and all three artifact uploads. A CI pass does not replace the device checks listed above.
+Final pre-merge validation is recorded in [Build plugin suite #21](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45719944978), which passed the expanded test tasks, lint, all three builds, and all three artifact uploads. A CI pass does not replace the device checks listed above. Documentation-only changes are excluded from the full Android workflow; source, build configuration, shared settings, and workflow changes continue to trigger it.
 
 ## Remaining device checks
 

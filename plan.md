@@ -142,7 +142,7 @@ The root `continue.md` now reflects that Gradle module wiring and the initial CI
 - No PR comments, submitted reviews, or inline review threads were present at audit time.
 - Added `:uber:testDebugUnitTest` to the root test step so CI invokes tests for all three Android apps. Only `:ubereats` and `:transitgo` currently contain unit-test source sets; `:uber` has no tests to execute.
 - Added a synthetic Uber Eats classifier regression for mixed food and ride wording from the Uber app.
-- Extended workflow path filters to run the suite for root and per-plugin documentation changes, keeping the final handoff/plan update covered by CI.
+- Workflow path filters now run the full plugin suite for source, build-configuration, shared-settings, and workflow changes. Documentation-only updates are excluded so they do not consume a full Android CI run.
 - Static review confirmed distinct application IDs, provider authorities, notification listener components, and version metadata for all three apps; imported manifests contain only package-visibility queries and no Internet permission. No cross-plugin runtime dependency was found.
 - Uber Eats filters by supported source package before parsing and scopes removal callbacks; Transit GO filters by package and `go_mode` channel before parsing. Both clear in-memory state on listener disconnection. Diagnostics inspected do not log notification content or full notification keys.
 - Remaining device-only validation is documented above. Do not claim live notification behavior, private Transit RemoteViews compatibility, UI rendering, or settings persistence as validated by CI.
@@ -194,17 +194,17 @@ The agreed Uber settings scope is deliberately small:
 
 ### Uber progress implementation findings
 
-Inspection of the Uber ride plugin on the PR branch found that the notification pipeline already extracts a normalized progress value and `TargetRenderer.drawProgress` uses it to draw the progress track and vehicle position. The initial audit found that the card did not expose that value as a numeric percentage. The implementation now formats the existing normalized value in the card renderer; it does not introduce a second progress calculation.
+Inspection of the Uber ride plugin on the PR branch found that the notification pipeline already extracts a normalized progress value and `TargetRenderer.drawProgress` uses it to draw the progress track and vehicle position. The card does not yet expose that value as a numeric percentage. The implementation should reuse this existing source of truth and trace the value through the notification data, target model/template and renderer rather than introduce a second progress calculation.
 
 ### Next implementation and validation steps
 
 1. Complete a focused audit of Uber's per-instance configuration activity, preference keys/storage and target construction before changing the UI.
 2. Trace the existing progress field from `UberNotificationProvider` through `NotificationRepository` and the target data model to `TargetRenderer`; identify the narrowest place to expose a percentage without changing trip parsing.
-3. Implemented the Uber settings destination with the two existing preferences, per-instance persistence, and the shared Smartspacer-rendered preview. The screen and preview still require build and visual validation.
-4. Implemented the numeric percentage in the existing Uber card renderer using the notification's normalized progress value. Unit tests cover null, non-finite, out-of-range and boundary formatting; execution/build validation remains pending.
+3. Implement the Uber settings activity with the two existing preferences, per-instance persistence, and shared preview.
+4. Add the numeric percentage to the real Uber card using the existing valid progress value. Define and test null, out-of-range and boundary handling (clamp only for presentation; do not invent missing values).
 5. Add or update unit tests for progress conversion/formatting and state propagation where the existing architecture permits.
 6. Run focused local checks while iterating, then one consolidated full CI run for the coherent change batch. Do not reduce required coverage to save CI runs; seek approval before any additional full run beyond one consolidated follow-up.
 7. Perform visual and real-notification device validation for per-instance settings persistence, preview fidelity, percentage updates, missing-progress behavior and existing Hide Notification behavior. CI alone does not establish these behaviors.
 8. Update this plan and the PR description with verified results; keep the PR in draft until validation is complete.
 
-**Current status at this plan update:** the numeric progress percentage and Compose settings destination have been implemented on the PR branch. The settings preview uses the official Smartspacer renderer, live in-memory target data when available, and synthetic sample data otherwise; preview targets omit real actions and notification metadata. The progress-only revision passed the repository test, lint, and APK-build workflow (#38, commit `7110d7a`). A later settings-screen revision failed during compilation because two rounded icon references were unavailable; the latest run (#40, commit `9830eca`) confirmed only those two unresolved references. The references have been corrected in the current working revision; final consolidated validation and visual/device checks remain pending. PR #6 remains a draft; no merge, release, version bump or publication is authorized.
+**Current status at this plan update:** the scope and implementation direction above are agreed. The Uber settings page and numeric percentage have not yet been implemented or validated. No merge, release, version bump or publication is authorized by this plan update.
