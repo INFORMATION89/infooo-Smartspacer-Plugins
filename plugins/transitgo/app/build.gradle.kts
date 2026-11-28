@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace = "dev.marco.smartspacer.transitgo"
-    compileSdk = 37
+    compileSdk = rootProject.extra["compile_sdk"] as Int
 
     defaultConfig {
         applicationId = "dev.marco.smartspacer.transitgo"
-        minSdk = 29
+        minSdk = rootProject.extra["min_sdk"] as Int
         targetSdk = 36
         versionCode = 10301
         versionName = "1.3.1"

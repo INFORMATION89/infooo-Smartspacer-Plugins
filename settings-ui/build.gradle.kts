@@ -6,10 +6,10 @@ plugins {
 
 android {
     namespace = "dev.infooo.smartspacer.settings"
-    compileSdk = 37
+    compileSdk = rootProject.extra["compile_sdk"] as Int
 
     defaultConfig {
-        minSdk = 29
+        minSdk = rootProject.extra["min_sdk"] as Int
     }
 
     buildFeatures {

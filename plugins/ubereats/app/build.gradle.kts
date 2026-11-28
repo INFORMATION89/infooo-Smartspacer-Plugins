@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace = "dev.marco.smartspacer.ubereats"
-    compileSdk = 37
+    compileSdk = rootProject.extra["compile_sdk"] as Int
 
     defaultConfig {
         applicationId = "dev.marco.smartspacer.ubereats"
-        minSdk = 29
+        minSdk = rootProject.extra["min_sdk"] as Int
         targetSdk = 36
         versionCode = 101
         versionName = "0.1.1"
