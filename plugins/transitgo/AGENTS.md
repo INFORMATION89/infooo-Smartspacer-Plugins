@@ -11,3 +11,7 @@ Read this file together with the root [AGENTS.md](../../AGENTS.md), [rules.md](r
 - Keep this module buildable as `:transitgo` from the monorepo root.
 - Require physical-device validation for layout, density, and live trip behavior.
 - Never change versioning, signing, or releases without approval.
+
+## Mandatory repository rules
+
+Before editing this plugin, read and follow the root `AGENTS.md` and `rules.md`, plus this plugin's `rules.md`. These are mandatory acceptance criteria. The root no-hardcoding and CI/verification-budget policies apply to every change here. Make a change-specific checklist before coding and verify the final diff against it. If an applicable instruction cannot be read or followed, stop and report the blocker; do not silently bypass it.

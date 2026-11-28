@@ -69,3 +69,9 @@ Add automated tests for parser decisions, scoring, state transitions, and format
 - Keep versionName/versionCode and semantic-versioning behavior consistent with `CLAUDE.md`.
 - Never create/push a release tag, publish a GitHub release, alter release notes for a release, or change signing secrets/identity without explicit approval.
 - A locally or CI-generated debug-signed release APK is a test artifact, not an official distributable release.
+
+## No hardcoding and rule enforcement
+
+The root `rules.md` No hardcoding policy is mandatory for this module. Keep user-facing text in localized Android resources; build/environment values in the correct build configuration; configurable behavior in the existing preference model; and third-party integration assumptions in named, centralized constants at the integration boundary. Do not scatter magic strings, unexplained numeric thresholds, flags, IDs, or duplicated defaults. Secrets must never be committed. Keep legitimate platform/protocol invariants literal when appropriate, without needless abstraction.
+
+Before implementation, read the root and local instructions and make a concise acceptance checklist. Before completion, inspect the complete diff against it and report any unverified requirement. Root CI/verification-budget rules also apply: focused local checks while iterating, one consolidated full CI run per coherent batch, reuse passing results, retry only failed jobs where possible, and obtain approval before extra full CI runs beyond the agreed follow-up. Never reduce required test coverage to save CI.

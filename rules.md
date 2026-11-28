@@ -63,3 +63,27 @@ These rules apply to human and AI-assisted changes across the Smartspacer plugin
 - Keep release notes and assets scoped to each plugin.
 - Never bump a version, push a release tag, publish a GitHub release, change signing secrets, or change signing identity without explicit user approval.
 - A debug-signed CI APK is a test artifact, not an official release.
+
+## No hardcoding
+
+Do not hardcode values whose ownership or lifetime belongs outside the implementation that consumes them.
+
+- Put plugin-owned user-facing text in Android string/plural resources; use the existing localization system for every supported locale.
+- Put build/environment-specific values in the appropriate Gradle configuration, build variants, manifest placeholders, or generated build configuration. Never commit credentials, tokens, signing secrets, private keys, or other secrets.
+- Keep externally owned integration assumptions (package names, channels, notification keys, RemoteViews IDs, protocol fields, provider identifiers) named, centralized at the integration boundary, documented as assumptions, and covered by tests where practical. Do not scatter magic strings or numeric flags through parsing/rendering code.
+- Put user- or product-configurable behavior in the existing preference/configuration model. Do not duplicate a setting as a code constant or silently replace persisted values with a hardcoded default.
+- Avoid unexplained numeric literals for thresholds, timeouts, limits, dimensions, scoring weights, and policy decisions. Give meaningful values a named constant or typed configuration with units and rationale.
+- Keep true language, platform, mathematical, and stable protocol invariants as literals when that is clearer. Do not create configuration files, resources, or abstractions for every harmless constant.
+- Do not replace one hardcoded value with another, hide hardcoding behind a helper, or introduce speculative configuration frameworks. Trace the value to its actual owner and choose the narrowest appropriate source of truth.
+- Before completion, review changed code for magic numbers/strings, duplicated values, sample data leaking into production, and secrets. Explain any intentional hardcoded exceptions in the change summary.
+
+## CI and verification budget
+
+Avoid excessive CI without weakening required coverage.
+
+- During iteration, prefer the smallest relevant local test, lint, or build tasks. Batch related changes and run the complete PR workflow once for a coherent implementation batch.
+- Reuse passing CI results for the same commit and environment. If one job fails, inspect its logs and rerun only the failed job where possible; do not rerun successful jobs without a technical reason.
+- Do not trigger a full workflow for documentation-only changes when the workflow can safely exclude them. Do not alter required checks or reduce coverage merely to avoid a run.
+- Do not create extra commits or push tiny sequential updates solely to trigger repeated CI runs. Consolidate fixes first.
+- For infrastructure failures, allow at most one materially different retry; if the same failure recurs, stop and report the blocker.
+- Ask for approval before an additional full CI run beyond the agreed consolidated run/follow-up. This does not waive required checks or the existing release/device acceptance criteria.

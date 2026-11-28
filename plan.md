@@ -155,3 +155,56 @@ The root `continue.md` now reflects that Gradle module wiring and the initial CI
 - Final pre-merge validation: [Build plugin suite #21](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/actions/runs/45719944978) passed all three test tasks, Android Lint for all three apps, all three APK builds, and uploads for `uber-rides-plugin`, `uber-eats-plugin`, and `transit-go-plugin`.
 - No release tags or releases were created. The source repositories were not archived or deleted.
 - Remaining follow-up: update the source repositories' remotes/workflows to point to the monorepo locations and decide separately whether to close the original repositories. Physical-device and extended notification-adapter tests remain release-readiness follow-up; CI did not perform those checks.
+
+
+## Settings unification and Uber ride progress — 2026-11-27
+
+### Shared settings direction
+
+The settings refactor is being developed in draft [PR #6](https://github.com/INFORMATION89/infooo-Smartspacer-Plugins/pull/6), branch `refactor/shared-expressive-settings`. It is not merged.
+
+- Introduce `:settings-ui` as the shared presentation layer for plugin settings. Keep plugin-specific preference storage, behavior, notification parsing and product logic inside each plugin.
+- Use Material 3 Expressive components and motion for settings. Haze is the sole custom visual treatment and is limited to the translucent/blurred top app bar.
+- Preserve the existing preview and its transitions, but render the actual Smartspacer target model through the official `SmartspacerView` renderer. Do not recreate Smartspacer cards with custom Compose layouts.
+- Build previews through the same target-building path as production where practical. Preview targets must omit production actions/notification metadata and must never mutate production state or trigger real actions.
+- Show live target data when an active notification/order/trip exists; otherwise use clearly labelled synthetic example data. Settings changes should refresh the preview and animate state transitions.
+- Preserve existing preference semantics, permission flows and notification behavior. Share presentation components, not product-specific state or parsers.
+- Reduce duplicated settings code now that the plugins live in one monorepo, without coupling their runtime behavior.
+
+### Scope and status by plugin
+
+- Uber Eats and Transit GO have been refactored to consume the shared settings UI in the PR branch. Their notification and product behavior is intended to remain unchanged.
+- The shared module and those integrations still require full build and visual/device validation. Unit tests and lint were reported passing in the initial PR checks; do not treat that as proof that all APK builds or visual behavior are validated.
+- PR #6 remains a draft and must not be merged until the remaining technical/API checks and validation are complete.
+
+### Uber ride plugin — agreed settings and progress scope
+
+The root `:uber` plugin is distinct from Uber Eats. It consumes Uber ride notifications through Smartspacer's `SmartspacerNotificationProvider`; it does not need its own `NotificationListenerService` or a duplicate notification-access permission screen. Smartspacer owns notification access and delivery. Keep the existing notification parsing and trip-state processing intact.
+
+The agreed Uber settings scope is deliberately small:
+
+- Keep the existing per-Target-instance configuration model. Smartspacer supports multiple instances of a Target; each instance's configuration must remain independently addressable and must not be converted into one global plugin preference.
+- Preserve the current **Show Dynamic Information** preference and its exact behavior.
+- Preserve the current **Hide Notification** preference and its exact behavior.
+- Add the settings page using `:settings-ui`, Material 3 Expressive and the shared Smartspacer-rendered preview.
+- Do not add redundant notification permission controls or extra functional preferences.
+- Show the real trip progress as a numeric percentage on the Uber card whenever a valid progress value is available. No fabricated or time-based progress. If no valid value is supplied, omit the percentage rather than displaying a guessed value.
+- Keep the existing visual progress track/vehicle rendering. The percentage should be derived from the same normalized progress value (0.0–1.0), formatted as a percentage, and updated from actual notification data. Any animation may interpolate between received values but must not create progress independently.
+- Use representative synthetic trip data for the preview when no live trip exists; preview interactions must not affect a real trip.
+
+### Uber progress implementation findings
+
+Inspection of the Uber ride plugin on the PR branch found that the notification pipeline already extracts a normalized progress value and `TargetRenderer.drawProgress` uses it to draw the progress track and vehicle position. The card does not yet expose that value as a numeric percentage. The implementation should reuse this existing source of truth and trace the value through the notification data, target model/template and renderer rather than introduce a second progress calculation.
+
+### Next implementation and validation steps
+
+1. Complete a focused audit of Uber's per-instance configuration activity, preference keys/storage and target construction before changing the UI.
+2. Trace the existing progress field from `UberNotificationProvider` through `NotificationRepository` and the target data model to `TargetRenderer`; identify the narrowest place to expose a percentage without changing trip parsing.
+3. Implement the Uber settings activity with the two existing preferences, per-instance persistence, and shared preview.
+4. Add the numeric percentage to the real Uber card using the existing valid progress value. Define and test null, out-of-range and boundary handling (clamp only for presentation; do not invent missing values).
+5. Add or update unit tests for progress conversion/formatting and state propagation where the existing architecture permits.
+6. Run focused local checks while iterating, then one consolidated full CI run for the coherent change batch. Do not reduce required coverage to save CI runs; seek approval before any additional full run beyond one consolidated follow-up.
+7. Perform visual and real-notification device validation for per-instance settings persistence, preview fidelity, percentage updates, missing-progress behavior and existing Hide Notification behavior. CI alone does not establish these behaviors.
+8. Update this plan and the PR description with verified results; keep the PR in draft until validation is complete.
+
+**Current status at this plan update:** the scope and implementation direction above are agreed. The Uber settings page and numeric percentage have not yet been implemented or validated. No merge, release, version bump or publication is authorized by this plan update.
