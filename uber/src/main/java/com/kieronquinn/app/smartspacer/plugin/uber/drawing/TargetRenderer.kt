@@ -30,6 +30,8 @@ private const val IMAGES_WIDTH = 312
 private const val IMAGE_SIZE = 118
 private const val FONT_BIGGER = 53f
 private const val FONT_SMALLER = 40f
+private const val FONT_PROGRESS = 32f
+private const val PROGRESS_LABEL_GAP = 8f
 
 private val drawPaint = Paint().apply {
     strokeWidth = OUTLINE_STROKE_WIDTH
@@ -68,6 +70,7 @@ private fun Canvas.drawNotificationData(
         context.getUnfilledLineColour(),
         context.getFilledLineColour()
     )
+    drawProgressPercentage(data.progress, context, font)
     val driver = data.driver?.scale(IMAGE_SIZE, IMAGE_SIZE)?.apply { density = 0 }
     val car = data.car?.resize(IMAGES_WIDTH, IMAGE_SIZE)?.apply { density = 0 }
     val hasImages = driver != null || car != null
@@ -95,6 +98,25 @@ private fun Canvas.drawNotificationData(
         textPaint.textSize = FONT_SMALLER
         drawText(subtitle.ellipsize(maxTextWidth), width / 2f, subtitleTop, textPaint)
     }
+}
+
+private fun Canvas.drawProgressPercentage(
+    progress: Float?,
+    context: Context,
+    font: Typeface?
+) {
+    val label = progress.toProgressPercentage() ?: return
+    textPaint.color = context.getTextColour()
+    textPaint.typeface = font
+    textPaint.textSize = FONT_PROGRESS
+    textPaint.textAlign = Paint.Align.RIGHT
+    drawText(
+        label,
+        width - CANVAS_PADDING,
+        CANVAS_PADDING + FONT_PROGRESS + PROGRESS_LABEL_GAP,
+        textPaint
+    )
+    textPaint.textAlign = Paint.Align.CENTER
 }
 
 private fun Canvas.drawImages(driver: Bitmap?, car: Bitmap?, top: Float) {

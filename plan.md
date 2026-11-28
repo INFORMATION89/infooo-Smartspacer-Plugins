@@ -194,17 +194,17 @@ The agreed Uber settings scope is deliberately small:
 
 ### Uber progress implementation findings
 
-Inspection of the Uber ride plugin on the PR branch found that the notification pipeline already extracts a normalized progress value and `TargetRenderer.drawProgress` uses it to draw the progress track and vehicle position. The card does not yet expose that value as a numeric percentage. The implementation should reuse this existing source of truth and trace the value through the notification data, target model/template and renderer rather than introduce a second progress calculation.
+Inspection of the Uber ride plugin on the PR branch found that the notification pipeline already extracts a normalized progress value and `TargetRenderer.drawProgress` uses it to draw the progress track and vehicle position. The initial audit found that the card did not expose that value as a numeric percentage. The implementation now formats the existing normalized value in the card renderer; it does not introduce a second progress calculation.
 
 ### Next implementation and validation steps
 
 1. Complete a focused audit of Uber's per-instance configuration activity, preference keys/storage and target construction before changing the UI.
 2. Trace the existing progress field from `UberNotificationProvider` through `NotificationRepository` and the target data model to `TargetRenderer`; identify the narrowest place to expose a percentage without changing trip parsing.
 3. Implement the Uber settings activity with the two existing preferences, per-instance persistence, and shared preview.
-4. Add the numeric percentage to the real Uber card using the existing valid progress value. Define and test null, out-of-range and boundary handling (clamp only for presentation; do not invent missing values).
+4. Implemented the numeric percentage in the existing Uber card renderer using the notification's normalized progress value. Unit tests cover null, non-finite, out-of-range and boundary formatting; execution/build validation remains pending.
 5. Add or update unit tests for progress conversion/formatting and state propagation where the existing architecture permits.
 6. Run focused local checks while iterating, then one consolidated full CI run for the coherent change batch. Do not reduce required coverage to save CI runs; seek approval before any additional full run beyond one consolidated follow-up.
 7. Perform visual and real-notification device validation for per-instance settings persistence, preview fidelity, percentage updates, missing-progress behavior and existing Hide Notification behavior. CI alone does not establish these behaviors.
 8. Update this plan and the PR description with verified results; keep the PR in draft until validation is complete.
 
-**Current status at this plan update:** the scope and implementation direction above are agreed. The Uber settings page and numeric percentage have not yet been implemented or validated. No merge, release, version bump or publication is authorized by this plan update.
+**Current status at this plan update:** the numeric progress percentage is implemented in the existing card renderer and has focused unit tests, but neither tests nor builds have yet been run for this change. The Uber settings page remains unimplemented. PR #6 remains a draft; no merge, release, version bump or publication is authorized.

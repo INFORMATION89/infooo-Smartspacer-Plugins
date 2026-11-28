@@ -99,19 +99,12 @@ class UberNotificationProvider: SmartspacerNotificationProvider() {
         isListenerEnabled: Boolean,
         notifications: List<StatusBarNotification>
     ) {
-        if(BuildConfig.DEBUG) notifications.forEach {
-            try {
-                it.logForDebugging()
-            }catch (e: Exception) {
-                Log.d(TAG, "Unable to log notification ${it.key}", e)
-            }
-        }
         //Only one trip can be active at a time, so show the single best match
         val data = notifications.mapNotNull {
             try {
                 it.parse()
             }catch (e: Exception) {
-                Log.w(TAG, "Failed to parse Uber notification ${it.key}", e)
+                Log.w(TAG, "Failed to parse Uber notification (${e.javaClass.simpleName})")
                 null
             }
         }.filter {
@@ -248,7 +241,7 @@ class UberNotificationProvider: SmartspacerNotificationProvider() {
         return try {
             apply(provideContext(), null)
         }catch (e: Exception) {
-            Log.d(TAG, "Error loading RemoteViews", e)
+            Log.d(TAG, "Unable to load Uber RemoteViews (${e.javaClass.simpleName})")
             null
         }
     }
@@ -265,7 +258,7 @@ class UberNotificationProvider: SmartspacerNotificationProvider() {
         return try {
             loadDrawable(provideContext())?.toBitmapSafely()
         }catch (e: Exception) {
-            Log.d(TAG, "Unable to load icon", e)
+            Log.d(TAG, "Unable to load Uber notification icon (${e.javaClass.simpleName})")
             null
         }
     }
@@ -320,41 +313,6 @@ class UberNotificationProvider: SmartspacerNotificationProvider() {
         return provideContext().resources.getDimensionPixelSize(
             R.dimen.progress_bar_expanded_screen_edges_distance_before_s
         )
-    }
-
-    /**
-     *  Debug builds only: dumps each Uber notification to Logcat so the parsing can be tuned
-     *  against a real trip. View with `adb logcat -s UberPlugin`.
-     */
-    @Suppress("DEPRECATION")
-    private fun StatusBarNotification.logForDebugging() {
-        val n = notification
-        val uberContext = createUberContext()
-        fun layoutName(views: RemoteViews?): String? = views?.layoutId?.let { id ->
-            try {
-                uberContext?.resources?.getResourceName(id)
-            }catch (e: Exception) {
-                id.toString()
-            }
-        }
-        val extras = n.extras?.let { bundle ->
-            bundle.keySet().joinToString { key ->
-                val printable = try {
-                    when(val value = bundle.get(key)) {
-                        is CharSequence, is Number, is Boolean -> value.toString()
-                        null -> "null"
-                        else -> value.javaClass.simpleName
-                    }
-                }catch (e: Exception) {
-                    "<unreadable>"
-                }
-                "$key=$printable"
-            }
-        }
-        Log.d(TAG, "key=$key id=$id flags=0x${n.flags.toString(16)} category=${n.category} " +
-                "channel=${n.channelId} content=${layoutName(n.contentView)} " +
-                "big=${layoutName(n.bigContentView)} headsUp=${layoutName(n.headsUpContentView)} " +
-                "extras={$extras}")
     }
 
 }
