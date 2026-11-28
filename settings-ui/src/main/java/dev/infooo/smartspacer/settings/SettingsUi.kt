@@ -168,6 +168,7 @@ fun SettingsSwitchPreference(
     summary: String,
     icon: ImageVector,
     checked: Boolean,
+    enabled: Boolean = true,
     onCheckedChange: (Boolean) -> Unit
 ) {
     ListItem(
@@ -175,7 +176,7 @@ fun SettingsSwitchPreference(
         supportingContent = { Text(summary) },
         leadingContent = { androidx.compose.material3.Icon(icon, contentDescription = null) },
         trailingContent = {
-            Switch(checked = checked, onCheckedChange = onCheckedChange)
+            Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
         },
         colors = ListItemDefaults.colors(containerColor = Color.Transparent)
     )

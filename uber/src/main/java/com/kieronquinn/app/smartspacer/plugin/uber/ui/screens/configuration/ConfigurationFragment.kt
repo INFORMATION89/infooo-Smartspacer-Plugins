@@ -71,6 +71,7 @@ class ConfigurationFragment: Fragment(), BackAvailable {
                             summary = stringResource(R.string.configuration_show_expanded_info_content),
                             icon = androidx.compose.material.icons.Icons.Default.Visibility,
                             checked = settings.showExpandedInfo,
+                            enabled = configState is State.Loaded,
                             onCheckedChange = viewModel::onShowExpandedInfoChanged
                         )
                         SettingsDivider()
@@ -79,6 +80,7 @@ class ConfigurationFragment: Fragment(), BackAvailable {
                             summary = stringResource(R.string.configuration_hide_notification_content),
                             icon = androidx.compose.material.icons.Icons.Default.NotificationsOff,
                             checked = settings.hideNotification,
+                            enabled = configState is State.Loaded,
                             onCheckedChange = viewModel::onHideNotificationChanged
                         )
                     }
