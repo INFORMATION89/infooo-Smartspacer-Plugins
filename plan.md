@@ -142,7 +142,7 @@ The root `continue.md` now reflects that Gradle module wiring and the initial CI
 - No PR comments, submitted reviews, or inline review threads were present at audit time.
 - Added `:uber:testDebugUnitTest` to the root test step so CI invokes tests for all three Android apps. Only `:ubereats` and `:transitgo` currently contain unit-test source sets; `:uber` has no tests to execute.
 - Added a synthetic Uber Eats classifier regression for mixed food and ride wording from the Uber app.
-- Extended workflow path filters to run the suite for root and per-plugin documentation changes, keeping the final handoff/plan update covered by CI.
+- Workflow path filters now run the full plugin suite for source, build-configuration, shared-settings, and workflow changes. Documentation-only updates are excluded so they do not consume a full Android CI run.
 - Static review confirmed distinct application IDs, provider authorities, notification listener components, and version metadata for all three apps; imported manifests contain only package-visibility queries and no Internet permission. No cross-plugin runtime dependency was found.
 - Uber Eats filters by supported source package before parsing and scopes removal callbacks; Transit GO filters by package and `go_mode` channel before parsing. Both clear in-memory state on listener disconnection. Diagnostics inspected do not log notification content or full notification keys.
 - Remaining device-only validation is documented above. Do not claim live notification behavior, private Transit RemoteViews compatibility, UI rendering, or settings persistence as validated by CI.
