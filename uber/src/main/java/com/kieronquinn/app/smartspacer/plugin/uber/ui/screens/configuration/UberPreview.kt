@@ -28,7 +28,11 @@ internal fun Context.createUberPreviewTarget(
     val subtitle = data?.subtitle ?: getString(R.string.preview_example_subtitle)
     val targetIcon = Icon(AndroidIcon.createWithResource(this, R.drawable.ic_uber))
     val component = ComponentName(this, UberTarget::class.java)
-    val image = if(showExpandedInfo) data?.image ?: exampleImage else null
+    val image = when {
+        !showExpandedInfo -> null
+        data != null -> data.image
+        else -> exampleImage
+    }
 
     return if(image != null) {
         TargetTemplate.Image(

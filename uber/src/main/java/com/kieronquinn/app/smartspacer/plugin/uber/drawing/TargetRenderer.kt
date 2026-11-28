@@ -208,12 +208,13 @@ private fun Canvas.drawProgress(
     val endOffset = 0.01f
     drawPaint.color = unfilledColour
     drawPath(createRoundedPath(0f + endOffset, 1f + startOffset), drawPaint)
-    //No progress available: just show the empty track
-    if(end == null) {
+    //No valid progress available: just show the empty track
+    val validEnd = end?.takeIf { it.isFinite() }
+    if(validEnd == null) {
         restore()
         return
     }
-    val offsetEnd = 1f - end.coerceIn(0.05f, 1f)
+    val offsetEnd = 1f - validEnd.coerceIn(0.05f, 1f)
     drawPaint.color = filledColour
     val progressPath = createRoundedPath(offsetEnd + endOffset, 1f + startOffset)
     drawPath(progressPath, drawPaint)

@@ -200,11 +200,11 @@ Inspection of the Uber ride plugin on the PR branch found that the notification 
 
 1. Complete a focused audit of Uber's per-instance configuration activity, preference keys/storage and target construction before changing the UI.
 2. Trace the existing progress field from `UberNotificationProvider` through `NotificationRepository` and the target data model to `TargetRenderer`; identify the narrowest place to expose a percentage without changing trip parsing.
-3. Implement the Uber settings activity with the two existing preferences, per-instance persistence, and shared preview.
+3. Implemented the Uber settings destination with the two existing preferences, per-instance persistence, and the shared Smartspacer-rendered preview. The screen and preview still require build and visual validation.
 4. Implemented the numeric percentage in the existing Uber card renderer using the notification's normalized progress value. Unit tests cover null, non-finite, out-of-range and boundary formatting; execution/build validation remains pending.
 5. Add or update unit tests for progress conversion/formatting and state propagation where the existing architecture permits.
 6. Run focused local checks while iterating, then one consolidated full CI run for the coherent change batch. Do not reduce required coverage to save CI runs; seek approval before any additional full run beyond one consolidated follow-up.
 7. Perform visual and real-notification device validation for per-instance settings persistence, preview fidelity, percentage updates, missing-progress behavior and existing Hide Notification behavior. CI alone does not establish these behaviors.
 8. Update this plan and the PR description with verified results; keep the PR in draft until validation is complete.
 
-**Current status at this plan update:** the numeric progress percentage is implemented in the existing card renderer and has focused unit tests, but neither tests nor builds have yet been run for this change. The Uber settings page remains unimplemented. PR #6 remains a draft; no merge, release, version bump or publication is authorized.
+**Current status at this plan update:** the numeric progress percentage and Compose settings destination have been implemented on the PR branch. The settings preview uses the official Smartspacer renderer, live in-memory target data when available, and synthetic sample data otherwise; preview targets omit real actions and notification metadata. Focused tests, builds, and visual/device validation have not yet been run for these changes. PR #6 remains a draft; no merge, release, version bump or publication is authorized.
