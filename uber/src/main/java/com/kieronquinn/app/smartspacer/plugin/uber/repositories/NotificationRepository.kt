@@ -11,6 +11,9 @@ import com.kieronquinn.app.smartspacer.sdk.provider.SmartspacerTargetProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -19,13 +22,14 @@ interface NotificationRepository {
     fun setNotifications(notifications: List<NotificationData>)
     fun dismissNotification(id: String): Boolean
     fun getTargetData(): List<TargetData>
+    fun getTargetDataFlow(): StateFlow<List<TargetData>>
 
 }
 
 class NotificationRepositoryImpl(private val context: Context): NotificationRepository {
 
     private val scope = MainScope()
-    private var targetData = emptyList<TargetData>()
+    private val targetData = MutableStateFlow(emptyList<TargetData>())
     private val updateLock = Mutex()
 
     override fun setNotifications(notifications: List<NotificationData>) {
@@ -37,14 +41,14 @@ class NotificationRepositoryImpl(private val context: Context): NotificationRepo
     }
 
     override fun dismissNotification(id: String): Boolean {
-        val targetData = targetData.firstOrNull { it.notification.id.toString() == id }
+        val target = targetData.value.firstOrNull { it.notification.id.toString() == id }
             ?: return false
-        SmartspacerNotificationProvider.dismissNotification(context, targetData.notification)
+        SmartspacerNotificationProvider.dismissNotification(context, target.notification)
         return true
     }
 
     private fun updateTargetsLocked(notifications: List<NotificationData>) {
-        targetData = notifications.map {
+        targetData.value = notifications.map {
             it.toTargetData()
         }
         SmartspacerTargetProvider.notifyChange(context, UberTarget::class.java)
@@ -60,8 +64,8 @@ class NotificationRepositoryImpl(private val context: Context): NotificationRepo
         return TargetData(notification, icon, title, subtitle, image)
     }
 
-    override fun getTargetData(): List<TargetData> {
-        return targetData
-    }
+    override fun getTargetData(): List<TargetData> = targetData.value
+
+    override fun getTargetDataFlow(): StateFlow<List<TargetData>> = targetData.asStateFlow()
 
 }

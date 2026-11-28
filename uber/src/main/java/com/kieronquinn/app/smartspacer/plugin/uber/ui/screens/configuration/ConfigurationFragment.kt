@@ -1,85 +1,96 @@
 package com.kieronquinn.app.smartspacer.plugin.uber.ui.screens.configuration
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import com.kieronquinn.app.smartspacer.plugin.shared.model.settings.BaseSettingsItem
-import com.kieronquinn.app.smartspacer.plugin.shared.model.settings.GenericSettingsItem.SwitchSetting
+import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
+import androidx.fragment.app.Fragment
 import com.kieronquinn.app.smartspacer.plugin.shared.ui.base.BackAvailable
-import com.kieronquinn.app.smartspacer.plugin.shared.ui.base.settings.BaseSettingsAdapter
-import com.kieronquinn.app.smartspacer.plugin.shared.ui.base.settings.BaseSettingsFragment
-import com.kieronquinn.app.smartspacer.plugin.shared.utils.extensions.whenResumed
 import com.kieronquinn.app.smartspacer.plugin.uber.R
+import com.kieronquinn.app.smartspacer.plugin.uber.drawing.drawExampleTargetImage
 import com.kieronquinn.app.smartspacer.plugin.uber.ui.screens.configuration.ConfigurationViewModel.State
 import com.kieronquinn.app.smartspacer.sdk.SmartspacerConstants.EXTRA_SMARTSPACER_ID
+import dev.infooo.smartspacer.settings.PluginSettingsScaffold
+import dev.infooo.smartspacer.settings.SettingsDivider
+import dev.infooo.smartspacer.settings.SettingsGroup
+import dev.infooo.smartspacer.settings.SettingsSectionTitle
+import dev.infooo.smartspacer.settings.SettingsSwitchPreference
+import dev.infooo.smartspacer.settings.SettingsTheme
+import dev.infooo.smartspacer.settings.SmartspacerTargetPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.kieronquinn.app.shared.R as SharedR
 
-class ConfigurationFragment: BaseSettingsFragment(), BackAvailable {
+class ConfigurationFragment: Fragment(), BackAvailable {
 
     private val viewModel by viewModel<ConfigurationViewModel>()
 
-    override val adapter by lazy {
-        Adapter()
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = ComposeView(requireContext()).apply {
+        setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        setContent {
+            val context = LocalContext.current
+            val configState by viewModel.state.collectAsState()
+            val notifications by viewModel.notifications.collectAsState()
+            val settings = (configState as? State.Loaded)?.targetData
+                ?: com.kieronquinn.app.smartspacer.plugin.uber.targets.UberTarget.UberTargetData()
+            val exampleImage = remember(context) { context.drawExampleTargetImage() }
+            val activeNotification = notifications.firstOrNull()
+            val previewTarget = remember(
+                activeNotification,
+                settings.showExpandedInfo,
+                exampleImage
+            ) {
+                context.createUberPreviewTarget(
+                    activeNotification,
+                    settings.showExpandedInfo,
+                    exampleImage
+                )
+            }
 
-    override val additionalPadding by lazy {
-        resources.getDimension(SharedR.dimen.margin_8)
+            SettingsTheme {
+                PluginSettingsScaffold(title = stringResource(R.string.target_label)) {
+                    SettingsSectionTitle(stringResource(R.string.settings_preview_title))
+                    SmartspacerTargetPreview(
+                        target = previewTarget,
+                        isExample = activeNotification == null,
+                        exampleLabel = stringResource(R.string.preview_example_label)
+                    )
+                    SettingsSectionTitle(stringResource(R.string.settings_preferences_title))
+                    SettingsGroup {
+                        SettingsSwitchPreference(
+                            title = stringResource(R.string.configuration_show_expanded_info_title),
+                            summary = stringResource(R.string.configuration_show_expanded_info_content),
+                            icon = androidx.compose.material.icons.Icons.Rounded.Visibility,
+                            checked = settings.showExpandedInfo,
+                            onCheckedChange = viewModel::onShowExpandedInfoChanged
+                        )
+                        SettingsDivider()
+                        SettingsSwitchPreference(
+                            title = stringResource(R.string.configuration_hide_notification_title),
+                            summary = stringResource(R.string.configuration_hide_notification_content),
+                            icon = androidx.compose.material.icons.Icons.Rounded.NotificationsOff,
+                            checked = settings.hideNotification,
+                            onCheckedChange = viewModel::onHideNotificationChanged
+                        )
+                    }
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupState()
-        viewModel.setup(requireActivity().intent.getStringExtra(EXTRA_SMARTSPACER_ID)!!)
+        val smartspacerId = requireActivity().intent.getStringExtra(EXTRA_SMARTSPACER_ID) ?: return
+        viewModel.setup(smartspacerId)
     }
-
-    private fun setupState() {
-        handleState(viewModel.state.value)
-        whenResumed {
-            viewModel.state.collect {
-                handleState(it)
-            }
-        }
-    }
-
-    private fun handleState(state: State) = with(binding) {
-        when(state) {
-            is State.Loading -> {
-                settingsBaseLoading.isVisible = true
-                settingsBaseRecyclerView.isVisible = false
-            }
-            is State.Loaded -> {
-                settingsBaseLoading.isVisible = false
-                settingsBaseRecyclerView.isVisible = true
-                adapter.update(state.loadItems(), settingsBaseRecyclerView)
-            }
-        }
-    }
-
-    private fun State.Loaded.loadItems(): List<BaseSettingsItem> {
-        return listOf(
-            SwitchSetting(
-                targetData.showExpandedInfo,
-                getString(R.string.configuration_show_expanded_info_title),
-                getString(R.string.configuration_show_expanded_info_content),
-                ContextCompat.getDrawable(
-                    requireContext(), R.drawable.ic_configuration_expanded_info
-                ),
-                onChanged = viewModel::onShowExpandedInfoChanged
-            ),
-            SwitchSetting(
-                targetData.hideNotification,
-                getString(R.string.configuration_hide_notification_title),
-                getString(R.string.configuration_hide_notification_content),
-                ContextCompat.getDrawable(
-                    requireContext(), R.drawable.ic_configuration_hide_notification
-                ),
-                onChanged = viewModel::onHideNotificationChanged
-            )
-        )
-    }
-
-    inner class Adapter: BaseSettingsAdapter(binding.settingsBaseRecyclerView, emptyList())
 
 }

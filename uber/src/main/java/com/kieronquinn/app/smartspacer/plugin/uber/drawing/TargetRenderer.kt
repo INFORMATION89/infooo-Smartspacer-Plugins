@@ -32,6 +32,7 @@ private const val FONT_BIGGER = 53f
 private const val FONT_SMALLER = 40f
 private const val FONT_PROGRESS = 32f
 private const val PROGRESS_LABEL_GAP = 8f
+private const val EXAMPLE_PROGRESS = 0.42f
 
 private val drawPaint = Paint().apply {
     strokeWidth = OUTLINE_STROKE_WIDTH
@@ -49,38 +50,76 @@ private val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
 
 fun Context.drawNotificationData(
     data: NotificationData
+): Bitmap = drawTargetCard(
+    data.progress,
+    data.progressCar,
+    data.driver,
+    data.car,
+    data.expandedTitle,
+    data.expandedSubtitle
+)
+
+/**
+ * Synthetic fallback used only by the settings preview when no live Uber trip is available.
+ */
+fun Context.drawExampleTargetImage(): Bitmap = drawTargetCard(
+    EXAMPLE_PROGRESS,
+    null,
+    null,
+    null,
+    getString(R.string.preview_example_title),
+    getString(R.string.preview_example_subtitle)
+)
+
+private fun Context.drawTargetCard(
+    progress: Float?,
+    progressCar: Bitmap?,
+    driver: Bitmap?,
+    car: Bitmap?,
+    title: String?,
+    subtitle: String?
 ): Bitmap = Bitmap.createBitmap(CANVAS_WIDTH, CANVAS_HEIGHT, Bitmap.Config.ARGB_8888).apply {
-    val canvas = Canvas(this)
-    canvas.drawNotificationData(this@drawNotificationData, data)
+    Canvas(this).drawTargetCard(
+        this@drawTargetCard,
+        progress,
+        progressCar,
+        driver,
+        car,
+        title,
+        subtitle
+    )
 }
 
-private fun Canvas.drawNotificationData(
+private fun Canvas.drawTargetCard(
     context: Context,
-    data: NotificationData
+    progress: Float?,
+    progressCar: Bitmap?,
+    driver: Bitmap?,
+    car: Bitmap?,
+    title: String?,
+    subtitle: String?
 ) {
     val font = context.getFont()
     fillPaint.color = context.getBackground()
     drawRect(0f, 0f, width.toFloat(), height.toFloat(), fillPaint)
-    val progressCar = data.progressCar?.makeSquare()?.scale(VEHICLE_SIZE, VEHICLE_SIZE)?.apply {
+    val renderedProgressCar = progressCar?.makeSquare()?.scale(VEHICLE_SIZE, VEHICLE_SIZE)?.apply {
         density = 0
     }
     drawProgress(
-        data.progress,
-        progressCar,
+        progress,
+        renderedProgressCar,
         context.getUnfilledLineColour(),
         context.getFilledLineColour()
     )
-    drawProgressPercentage(data.progress, context, font)
-    val driver = data.driver?.scale(IMAGE_SIZE, IMAGE_SIZE)?.apply { density = 0 }
-    val car = data.car?.resize(IMAGES_WIDTH, IMAGE_SIZE)?.apply { density = 0 }
-    val hasImages = driver != null || car != null
-    val title = data.expandedTitle
-    val subtitle = data.expandedSubtitle
+    drawProgressPercentage(progress, context, font)
+    val renderedDriver = driver?.scale(IMAGE_SIZE, IMAGE_SIZE)?.apply { density = 0 }
+    val renderedCar = car?.resize(IMAGES_WIDTH, IMAGE_SIZE)?.apply { density = 0 }
+    val hasImages = renderedDriver != null || renderedCar != null
     //Without images, centre the text block in the space inside the progress track
     val textBlockHeight = FONT_BIGGER + if(subtitle != null) 8f + FONT_SMALLER else 0f
     val titleTop = if(hasImages) {
         val imagesTop = CANVAS_PADDING * 1.5f
-        drawImages(driver, car, imagesTop)
+        drawImages(renderedDriver, renderedCar, imagesTop)
         imagesTop + IMAGE_SIZE + 16f + FONT_BIGGER
     } else {
         (height - textBlockHeight) / 2f + FONT_BIGGER * 0.8f

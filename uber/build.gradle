@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.compose'
     id 'com.google.devtools.ksp'
 }
 
@@ -42,11 +43,13 @@ android {
     buildFeatures {
         viewBinding true
         buildConfig true
+        compose true
     }
 }
 
 dependencies {
     implementation project(path: ':shared')
+    implementation project(path: ':settings-ui')
 
     //Data storage
     ksp "androidx.room:room-compiler:$room_version"

@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kieronquinn.app.smartspacer.plugin.shared.repositories.DataRepository
+import com.kieronquinn.app.smartspacer.plugin.uber.model.TargetData
+import com.kieronquinn.app.smartspacer.plugin.uber.repositories.NotificationRepository
 import com.kieronquinn.app.smartspacer.plugin.uber.targets.UberTarget
 import com.kieronquinn.app.smartspacer.plugin.uber.targets.UberTarget.UberTargetData
 import com.kieronquinn.app.smartspacer.sdk.provider.SmartspacerTargetProvider
@@ -19,6 +21,7 @@ import kotlinx.coroutines.launch
 abstract class ConfigurationViewModel: ViewModel() {
 
     abstract val state: StateFlow<State>
+    abstract val notifications: StateFlow<List<TargetData>>
 
     abstract fun setup(smartspacerId: String)
     abstract fun onShowExpandedInfoChanged(enabled: Boolean)
@@ -32,8 +35,11 @@ abstract class ConfigurationViewModel: ViewModel() {
 }
 
 class ConfigurationViewModelImpl(
-    private val dataRepository: DataRepository
+    private val dataRepository: DataRepository,
+    notificationRepository: NotificationRepository
 ): ConfigurationViewModel() {
+
+    override val notifications = notificationRepository.getTargetDataFlow()
 
     private val smartspacerId = MutableStateFlow<String?>(null)
 
